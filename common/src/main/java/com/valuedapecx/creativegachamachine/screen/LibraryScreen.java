@@ -1,0 +1,475 @@
+package com.valuedapecx.creativegachamachine.screen;
+
+import com.valuedapecx.creativegachamachine.client.ClientGroupCache;
+import com.valuedapecx.creativegachamachine.data.GachaGroup;
+import com.valuedapecx.creativegachamachine.network.AddGroupPacket;
+import com.valuedapecx.creativegachamachine.network.DuplicateGroupPacket;
+import com.valuedapecx.creativegachamachine.network.SelectGroupPacket;
+import com.valuedapecx.creativegachamachine.registry.ModPackets;
+import net.minecraft.client.gui.GuiGraphics;
+import net.minecraft.client.gui.screens.Screen;
+import net.minecraft.client.resources.sounds.SimpleSoundInstance;
+import net.minecraft.network.chat.Component;
+import net.minecraft.sounds.SoundEvents;
+import net.minecraft.util.Mth;
+
+import java.util.List;
+
+public class LibraryScreen extends Screen {
+
+    private int scrollOffset;
+
+    private static final int VISIBLE_COUNT = 8;
+
+    private final List<GachaGroup> groups;
+
+    private int contextMenuIndex = -1;
+
+    private int contextMenuX;
+    private int contextMenuY;
+
+    public LibraryScreen() {
+
+        super(
+                Component.translatable("gui.gacha_group_library")
+        );
+
+        this.groups =
+                ClientGroupCache.getGroups();
+    }
+
+    @Override
+    public boolean mouseScrolled(
+            double mouseX,
+            double mouseY,
+            double delta
+    ) {
+
+        if (delta > 0) {
+            scrollOffset--;
+        }
+
+        if (delta < 0) {
+            scrollOffset++;
+        }
+
+        scrollOffset =
+                Mth.clamp(
+                        scrollOffset,
+                        0,
+                        Math.max(
+                                0,
+                                groups.size()
+                                        - VISIBLE_COUNT
+                        )
+                );
+
+        return true;
+    }
+
+    @Override
+    public void render(
+            GuiGraphics graphics,
+            int mouseX,
+            int mouseY,
+            float partialTick
+    ) {
+
+        renderBackground(
+                graphics
+        );
+
+        super.render(
+                graphics,
+                mouseX,
+                mouseY,
+                partialTick
+        );
+
+        graphics.drawCenteredString(
+                font,
+                Component.translatable("gui.gacha_group_library"),
+                width / 2,
+                20,
+                0xFFFFFF
+        );
+
+        int y = 50;
+
+        for (
+                int i = 0;
+                i < VISIBLE_COUNT;
+                i++
+        ) {
+            int index = scrollOffset + i;
+
+            if (
+                    index >= groups.size()
+            ) {
+                break;
+            }
+
+            GachaGroup group =
+                    groups.get(index);
+
+            int x =
+                    width / 2 - 100;
+
+            int boxY =
+                    y + i * 24;
+
+            graphics.fill(
+                    x,
+                    boxY,
+                    x + 200,
+                    boxY + 20,
+                    0xAA202020
+            );
+
+            graphics.drawString(
+                    font,
+                    group.getName(),
+                    x + 5,
+                    boxY + 6,
+                    0xFFFFFF
+            );
+
+            graphics.drawString(
+                    font,
+                    Component.translatable("gui.gacha_group_library.roll_total", group.getRollCount()),
+                    x + 140,
+                    boxY + 6,
+                    0xAAAAAA
+            );
+        }
+
+        int visibleGroups = Math.min(groups.size(), VISIBLE_COUNT);
+        int addY = y + visibleGroups * 24 + 10;
+
+        graphics.fill(
+                width / 2 - 100,
+                addY,
+                width / 2 + 100,
+                addY + 20,
+                0xAA006600
+        );
+
+        graphics.drawCenteredString(
+                font,
+                Component.translatable("+ ").append(Component.translatable("gui.gacha_group_library.add_count")),
+                width / 2,
+                addY + 6,
+                0xFFFFFF
+        );
+
+        if (contextMenuIndex >= 0 && contextMenuIndex < groups.size()) {
+            // 外枠
+            graphics.fill(
+                    contextMenuX - 1,
+                    contextMenuY - 1,
+                    contextMenuX + 81,
+                    contextMenuY + 61,
+                    0xFFFFFFFF
+            );
+
+            // 背景
+            graphics.fill(
+                    contextMenuX,
+                    contextMenuY,
+                    contextMenuX + 80,
+                    contextMenuY + 60,
+                    0xFF202020
+            );
+
+            graphics.fill(
+                    contextMenuX,
+                    contextMenuY,
+                    contextMenuX + 80,
+                    contextMenuY + 60,
+                    0xFF202020
+            );
+
+            graphics.hLine(
+                    contextMenuX,
+                    contextMenuX + 79,
+                    contextMenuY + 20,
+                    0xFF555555
+            );
+
+            graphics.hLine(
+                    contextMenuX,
+                    contextMenuX + 79,
+                    contextMenuY + 40,
+                    0xFF555555
+            );
+
+            graphics.drawString(
+                    font,
+                    Component.translatable("gui.gacha_group_library.edit"),
+                    contextMenuX + 5,
+                    contextMenuY + 5,
+                    0xFFFFFF
+            );
+
+            graphics.drawString(
+                    font,
+                    Component.translatable("gui.gacha_group_library.duplicate"),
+                    contextMenuX + 5,
+                    contextMenuY + 25,
+                    0xFFFFFF
+            );
+
+            graphics.drawString(
+                    font,
+                    Component.translatable("gui.gacha_group_library.delete"),
+                    contextMenuX + 5,
+                    contextMenuY + 45,
+                    0xFFFFFF
+            );
+        }
+    }
+
+    @Override
+    public boolean mouseClicked(
+            double mouseX,
+            double mouseY,
+            int button
+    ) {
+        if (contextMenuIndex >= 0) {
+            if (
+                    mouseX >= contextMenuX
+                            &&
+                            mouseX <= contextMenuX + 80
+            ) {
+
+                // Edit
+                if (
+                        mouseY >= contextMenuY
+                                &&
+                                mouseY <= contextMenuY + 20
+                ) {
+
+                    if (minecraft != null) {
+                        minecraft.getSoundManager().play(SimpleSoundInstance.forUI(SoundEvents.UI_BUTTON_CLICK, 1.0F));
+
+                        minecraft.setScreen(
+                                new GroupEditScreen(
+                                        contextMenuIndex,
+                                        groups.get(
+                                                contextMenuIndex
+                                        )
+                                )
+                        );
+                    }
+
+                    return true;
+                }
+
+                // Duplicate
+                if (
+                        mouseY >= contextMenuY + 20
+                                &&
+                                mouseY <= contextMenuY + 40
+                ) {
+
+                    if (
+                            contextMenuIndex >= 0
+                                    &&
+                                    contextMenuIndex < groups.size()
+                    ) {
+
+                        ModPackets.CHANNEL.sendToServer(
+                                new DuplicateGroupPacket(
+                                        contextMenuIndex
+                                )
+                        );
+                    }
+
+                    contextMenuIndex = -1;
+
+                    return true;
+                }
+
+                // Delete
+                if (
+                        mouseY >= contextMenuY + 40
+                                &&
+                                mouseY <= contextMenuY + 60
+                ) {
+
+                    if (
+                            groups.size() <= 1
+                    ) {
+
+                        contextMenuIndex = -1;
+
+                        if (minecraft != null) {
+                            minecraft.getSoundManager().play(SimpleSoundInstance.forUI(SoundEvents.UI_BUTTON_CLICK, 1.0F));
+
+                            minecraft.setScreen(
+                                    new MessageScreen(
+                                            this,
+                                            Component.translatable("message.creative_gacha_machine.cannot_delete_last_group")
+                                    )
+                            );
+                        }
+
+                        return true;
+                    }
+
+                    if (
+                            contextMenuIndex < 0
+                                    ||
+                                    contextMenuIndex >= groups.size()
+                    ) {
+
+                        contextMenuIndex = -1;
+                        return true;
+                    }
+
+                    int deleteIndex =
+                            contextMenuIndex;
+
+                    String deleteName =
+                            groups.get(deleteIndex)
+                                    .getName();
+
+                    contextMenuIndex = -1;
+
+                    if (minecraft != null) {
+                        minecraft.getSoundManager().play(SimpleSoundInstance.forUI(SoundEvents.UI_BUTTON_CLICK, 1.0F));
+
+                        minecraft.setScreen(
+                                new DeleteConfirmScreen(
+                                        this,
+                                        deleteIndex,
+                                        deleteName
+                                )
+                        );
+                    }
+
+                    return true;
+                }
+            }
+
+            contextMenuIndex = -1;
+
+            return true;
+        }
+
+        int startY = 50;
+
+        for (
+                int i = 0;
+                i < VISIBLE_COUNT;
+                i++
+        ) {
+
+            int index =
+                    scrollOffset + i;
+
+            if (
+                    index >= groups.size()
+            ) {
+                break;
+            }
+
+            int x =
+                    width / 2 - 100;
+
+            int y =
+                    startY
+                            + i * 24;
+
+            if (
+                    mouseX >= x
+                            &&
+                            mouseX <= x + 200
+                            &&
+                            mouseY >= y
+                            &&
+                            mouseY <= y + 20
+            ) {
+
+                GachaGroup group =
+                        groups.get(index);
+
+                if (button == 0) {
+                    if (minecraft != null) {
+                        minecraft.getSoundManager().play(SimpleSoundInstance.forUI(SoundEvents.UI_BUTTON_CLICK, 1.0F));
+                    }
+
+                    ModPackets.CHANNEL.sendToServer(
+                            new SelectGroupPacket(
+                                    index
+                            )
+                    );
+
+                    onClose();
+
+                    return true;
+                }
+
+                if (button == 1) {
+                    if (minecraft != null) {
+                        minecraft.getSoundManager().play(SimpleSoundInstance.forUI(SoundEvents.UI_BUTTON_CLICK, 1.0F));
+                    }
+
+                    contextMenuIndex = index;
+
+                    contextMenuX = (int) mouseX;
+                    contextMenuY = (int) mouseY;
+
+                    return true;
+                }
+
+                return true;
+            }
+        }
+
+        int visibleGroups =
+                Math.min(
+                        groups.size(),
+                        VISIBLE_COUNT
+                );
+
+        int addY =
+                50
+                        + visibleGroups * 24
+                        + 10;
+
+        if (
+                mouseX >= width / 2 - 100
+                        &&
+                        mouseX <= width / 2 + 100
+                        &&
+                        mouseY >= addY
+                        &&
+                        mouseY <= addY + 20
+        ) {
+
+            ModPackets.CHANNEL.sendToServer(
+                    new AddGroupPacket()
+            );
+
+            return true;
+        }
+
+        return super.mouseClicked(
+                mouseX,
+                mouseY,
+                button
+        );
+    }
+
+    @Override
+    public void onClose() {
+
+        if (minecraft != null) {
+
+            minecraft.setScreen(
+                    null
+            );
+        }
+    }
+}
