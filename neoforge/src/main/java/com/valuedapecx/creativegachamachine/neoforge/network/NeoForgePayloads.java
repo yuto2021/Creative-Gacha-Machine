@@ -609,8 +609,17 @@ public final class NeoForgePayloads {
                                             blockEntity.getCurrentPage()
                             );
 
+                            int pageIndex = payload.page();
+
+                            if (pageIndex < 0
+                                    || pageIndex >= blockEntity.getPageCount()) {
+                                return;
+                            }
+
                             GachaPage page =
-                                    blockEntity.getCurrentPageData();
+                                    blockEntity.getCurrentGroupData()
+                                            .getPages()
+                                            .get(pageIndex);
 
                             page.setWeight(
                                     payload.slot(),

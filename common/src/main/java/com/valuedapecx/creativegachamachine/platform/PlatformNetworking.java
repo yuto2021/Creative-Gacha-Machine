@@ -71,7 +71,7 @@ public class PlatformNetworking {
     }
 
     @ExpectPlatform
-    public static void sendSyncPage(int page, CompoundTag pageTag) {
+    public static void sendSyncPage(ServerPlayer player, int page, CompoundTag pageTag) {
         throw new AssertionError();
     }
 

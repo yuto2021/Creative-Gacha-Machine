@@ -183,20 +183,47 @@ public class GachaMachineScreen extends AbstractContainerScreen<GachaMachineMenu
 
         super.render(guiGraphics, mouseX, mouseY, partialTick);
 
-        if (removeButton.isHovered()) guiGraphics.renderTooltip(font,
-                Component.translatable("tooltip.creative_gacha_machine.remove_page"), mouseX, mouseY);
-        if (prevButton.isHovered()) guiGraphics.renderTooltip(font,
-                Component.translatable(
-                        "tooltip.creative_gacha_machine.previous_page"
-                ), mouseX, mouseY);
-        if (nextButton.isHovered()) guiGraphics.renderTooltip(font,
-                Component.translatable(
-                        "tooltip.creative_gacha_machine.next_page"
-                ), mouseX, mouseY);
-        if (addButton.isHovered()) guiGraphics.renderTooltip(font,
-                Component.translatable(
-                        "tooltip.creative_gacha_machine.add_page"
-                ), mouseX, mouseY);
+        // ページボタン系ツールチップ
+        if (removeButton.isMouseOver(mouseX, mouseY)) {
+            guiGraphics.renderTooltip(
+                    font,
+                    Component.translatable(
+                            "tooltip.creative_gacha_machine.remove_page"
+                    ),
+                    mouseX,
+                    mouseY
+            );
+        }
+        else if (prevButton.isMouseOver(mouseX, mouseY)) {
+            guiGraphics.renderTooltip(
+                    font,
+                    Component.translatable(
+                            "tooltip.creative_gacha_machine.previous_page"
+                    ),
+                    mouseX,
+                    mouseY
+            );
+        }
+        else if (nextButton.isMouseOver(mouseX, mouseY)) {
+            guiGraphics.renderTooltip(
+                    font,
+                    Component.translatable(
+                            "tooltip.creative_gacha_machine.next_page"
+                    ),
+                    mouseX,
+                    mouseY
+            );
+        }
+        else if (addButton.isMouseOver(mouseX, mouseY)) {
+            guiGraphics.renderTooltip(
+                    font,
+                    Component.translatable(
+                            "tooltip.creative_gacha_machine.add_page"
+                    ),
+                    mouseX,
+                    mouseY
+            );
+        }
 
         if (messageTicks > 0 && message != null) guiGraphics.renderTooltip(
                 font, message, removeButton.getX(), removeButton.getY() - 15
@@ -221,6 +248,15 @@ public class GachaMachineScreen extends AbstractContainerScreen<GachaMachineMenu
 
             Slot slot = menu.slots.get(slotIndex);
             GachaPage page = ClientPageCache.getPage(menu.getCurrentPage());
+
+            System.out.println(
+                    "TOOLTIP PAGE=" + menu.getCurrentPage()
+                            + " SLOT=" + slotIndex
+                            + " CACHE="
+                            + (page == null
+                            ? "NULL"
+                            : page.getWeight(slotIndex))
+            );
 
             float weight = page != null ? page.getWeight(slotIndex) : 1.0F;
 

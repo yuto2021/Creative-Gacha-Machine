@@ -8,6 +8,10 @@ import java.util.Map;
 public class ClientPageCache {
     private static final Map<Integer, GachaPage> PAGES = new HashMap<>();
 
+    public static void clear() {
+        PAGES.clear();
+    }
+
     public static void setPage(int page, GachaPage data) {
         PAGES.put(page, data);
     }

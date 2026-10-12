@@ -4,7 +4,9 @@ import com.valuedapecx.creativegachamachine.data.GachaGroup;
 import com.valuedapecx.creativegachamachine.neoforge.network.*;
 import com.valuedapecx.creativegachamachine.platform.PageAction;
 
+import net.minecraft.client.Minecraft;
 import net.minecraft.core.HolderLookup;
+import net.minecraft.nbt.CompoundTag;
 import net.minecraft.server.level.ServerPlayer;
 import net.neoforged.neoforge.network.PacketDistributor;
 
@@ -130,6 +132,20 @@ public class PlatformNetworkingImpl {
                 SyncGroupPayload.create(
                         groups,
                         registries
+                )
+        );
+    }
+
+    public static void sendSyncPage(
+            ServerPlayer player,
+            int page,
+            CompoundTag pageTag
+    ) {
+        PacketDistributor.sendToPlayer(
+                player,
+                new SyncPagePayload(
+                        page,
+                        pageTag
                 )
         );
     }

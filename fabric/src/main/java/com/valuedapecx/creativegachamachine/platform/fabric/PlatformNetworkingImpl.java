@@ -5,6 +5,7 @@ import com.valuedapecx.creativegachamachine.network.*;
 import com.valuedapecx.creativegachamachine.platform.PageAction;
 import com.valuedapecx.creativegachamachine.registry.ModPackets;
 import net.minecraft.core.HolderLookup;
+import net.minecraft.nbt.CompoundTag;
 import net.minecraft.server.level.ServerPlayer;
 
 import java.util.List;
@@ -129,6 +130,20 @@ public class PlatformNetworkingImpl {
                 SyncGroupPacket.create(
                         groups,
                         registries
+                )
+        );
+    }
+
+    public static void sendSyncPage(
+            ServerPlayer player,
+            int page,
+            CompoundTag pageTag
+    ) {
+        ModPackets.CHANNEL.sendToPlayer(
+                player,
+                new SyncPagePacket(
+                        page,
+                        pageTag
                 )
         );
     }

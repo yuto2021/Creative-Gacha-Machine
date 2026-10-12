@@ -1,6 +1,7 @@
 package com.valuedapecx.creativegachamachine.menu;
 
 import com.valuedapecx.creativegachamachine.blockentity.GachaMachineBlockEntity;
+import com.valuedapecx.creativegachamachine.data.GachaPage;
 import com.valuedapecx.creativegachamachine.menu.slot.GachaPrizeSlot;
 import com.valuedapecx.creativegachamachine.network.SyncGroupPacket;
 import com.valuedapecx.creativegachamachine.platform.PlatformNetworking;
@@ -60,10 +61,36 @@ public class GachaMachineMenu
         addDataSlots(data);
         addMenuSlots(blockEntity, inventory);
 
-        Objects.requireNonNull(inventory.player.level().getServer()).execute(() -> {
-                    if (inventory.player instanceof ServerPlayer player) {
-                        PlatformNetworking.syncGroups(player, blockEntity.getGroups(), player.serverLevel().registryAccess());
-                    }
+        Objects.requireNonNull(
+                inventory.player.level().getServer()
+        ).execute(() -> {
+            if (inventory.player instanceof ServerPlayer player) {
+
+                PlatformNetworking.syncGroups(
+                        player,
+                        blockEntity.getGroups(),
+                        player.serverLevel().registryAccess()
+                );
+
+                for (int pageIndex = 0;
+                     pageIndex < blockEntity.getPageCount();
+                     pageIndex++) {
+
+                    GachaPage page =
+                            blockEntity.getCurrentGroupData()
+                                    .getPages()
+                                    .get(pageIndex);
+
+                    PlatformNetworking.sendSyncPage(
+                            player,
+                            pageIndex,
+                            page.save(
+                                    player.serverLevel()
+                                            .registryAccess()
+                            )
+                    );
+                }
+            }
         });
     }
 
@@ -169,11 +196,7 @@ public class GachaMachineMenu
     }
 
     public int getCurrentPage() {
-        if (blockEntity == null) {
-            return 0;
-        }
-
-        return blockEntity.getCurrentPage();
+        return data.get(54);
     }
 
 }
