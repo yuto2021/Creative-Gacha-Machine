@@ -13,5 +13,6 @@ public final class CreativeGachaMachine {
         ModItems.init();
         ModCreativeTabs.init();
         ModPackets.init();
+        ModDataComponents.init();
     }
 }

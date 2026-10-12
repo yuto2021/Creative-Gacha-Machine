@@ -9,6 +9,7 @@ import com.valuedapecx.creativegachamachine.platform.PlatformNetworking;
 import net.minecraft.client.gui.GuiGraphics;
 import net.minecraft.client.gui.components.Button;
 import net.minecraft.client.gui.components.EditBox;
+import net.minecraft.client.gui.screens.Screen;
 import net.minecraft.client.gui.screens.inventory.AbstractContainerScreen;
 import net.minecraft.client.resources.sounds.SimpleSoundInstance;
 import net.minecraft.network.chat.Component;
@@ -201,6 +202,8 @@ public class GachaMachineScreen extends AbstractContainerScreen<GachaMachineMenu
                 font, message, removeButton.getX(), removeButton.getY() - 15
         );
 
+        boolean renderedCustomTooltip = false;
+
         for (int slotIndex = 0; slotIndex < 54; slotIndex++) {
             int slotX = leftPos + 8 + (slotIndex % 9) * 18;
             int slotY = topPos + 43 + (slotIndex / 9) * 18;
@@ -211,7 +214,10 @@ public class GachaMachineScreen extends AbstractContainerScreen<GachaMachineMenu
                 continue;
             }
 
-            if (editingWeight) break;
+            if (editingWeight) {
+                renderedCustomTooltip = true;
+                break;
+            }
 
             Slot slot = menu.slots.get(slotIndex);
             GachaPage page = ClientPageCache.getPage(menu.getCurrentPage());
@@ -227,9 +233,9 @@ public class GachaMachineScreen extends AbstractContainerScreen<GachaMachineMenu
                             Component.translatable("tooltip.creative_gacha_machine.enable_slot")
                     ), mouseX, mouseY);
                 } else {
-                    guiGraphics.renderTooltip(font,
-                            Component.translatable("tooltip.creative_gacha_machine.disable_slot"), mouseX, mouseY);
+                    guiGraphics.renderTooltip(font, Component.translatable("tooltip.creative_gacha_machine.disable_slot"), mouseX, mouseY);
                 }
+                renderedCustomTooltip = true;
             } else if (slot.hasItem()) {
                 if (minecraft == null || minecraft.player == null) {
                     break;
@@ -237,22 +243,36 @@ public class GachaMachineScreen extends AbstractContainerScreen<GachaMachineMenu
 
                 List<Component> tooltip =
                         new ArrayList<>(
-                                slot.getItem().getTooltipLines(
-                                        Item.TooltipContext.EMPTY,
-                                        minecraft.player,
-                                        minecraft.options.advancedItemTooltips
-                                                ? TooltipFlag.Default.ADVANCED
-                                                : TooltipFlag.Default.NORMAL
+                                Screen.getTooltipFromItem(
+                                        minecraft,
+                                        slot.getItem()
                                 )
                         );
 
                 tooltip.add(Component.empty());
 
-                tooltip.add(Component.translatable("tooltip.creative_gacha_machine.weight", weight));
+                tooltip.add(
+                        Component.translatable(
+                                "tooltip.creative_gacha_machine.weight",
+                                weight
+                        )
+                );
 
-                tooltip.add(Component.translatable("tooltip.creative_gacha_machine.edit_item_weight"));
+                tooltip.add(
+                        Component.translatable(
+                                "tooltip.creative_gacha_machine.edit_item_weight"
+                        )
+                );
 
-                guiGraphics.renderComponentTooltip(font, tooltip, mouseX, mouseY);
+                guiGraphics.renderTooltip(
+                        font,
+                        tooltip,
+                        slot.getItem().getTooltipImage(),
+                        mouseX,
+                        mouseY
+                );
+
+                renderedCustomTooltip = true;
             }
 
             break;
@@ -281,11 +301,13 @@ public class GachaMachineScreen extends AbstractContainerScreen<GachaMachineMenu
             saveWeightButton.visible = false;
         }
 
-        renderTooltip(
-                guiGraphics,
-                mouseX,
-                mouseY
-        );
+        if (!renderedCustomTooltip) {
+            renderTooltip(
+                    guiGraphics,
+                    mouseX,
+                    mouseY
+            );
+        }
     }
 
     public void showMessage(Component component) {

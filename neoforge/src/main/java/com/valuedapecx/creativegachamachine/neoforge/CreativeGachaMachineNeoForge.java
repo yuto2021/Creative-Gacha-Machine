@@ -13,5 +13,6 @@ public final class CreativeGachaMachineNeoForge {
         ModMenus.init();
         ModItems.init();
         ModCreativeTabs.init();
+        ModDataComponents.init();
     }
 }

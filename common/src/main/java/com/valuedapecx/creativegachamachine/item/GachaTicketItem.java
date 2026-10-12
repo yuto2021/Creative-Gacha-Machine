@@ -1,5 +1,6 @@
 package com.valuedapecx.creativegachamachine.item;
 
+import com.valuedapecx.creativegachamachine.registry.ModDataComponents;
 import net.minecraft.ChatFormatting;
 import net.minecraft.core.component.DataComponents;
 import net.minecraft.nbt.CompoundTag;
@@ -24,31 +25,39 @@ public class GachaTicketItem extends Item {
             TooltipFlag tooltipFlag
     ) {
 
-        CustomData data = stack.get(DataComponents.CUSTOM_DATA);
+        String ticketName =
+                stack.get(
+                        ModDataComponents.TICKET_NAME.get()
+                );
 
-        if (data == null) {
+        Integer ticketType =
+                stack.get(
+                        ModDataComponents.TICKET_TYPE.get()
+                );
+
+        if (ticketName == null && ticketType == null) {
             return;
         }
-
-        CompoundTag tag = data.copyTag();
 
         tooltip.add(
                 Component.literal("Ticket Information")
                         .withStyle(ChatFormatting.GOLD)
         );
 
-        tooltip.add(
-                Component.translatable(
-                        "tooltip.gacha_creative_machine.name",
-                        tag.getString("TicketName")
-                )
-        );
+        if (ticketName != null)
+            tooltip.add(
+                    Component.translatable(
+                            "tooltip.gacha_ticket.name",
+                            ticketName
+                    )
+            );
 
-        tooltip.add(
-                Component.translatable(
-                        "tooltip.gacha_creative_machine.type",
-                        tag.getInt("TicketType")
-                )
-        );
+        if (ticketType != null)
+            tooltip.add(
+                    Component.translatable(
+                            "tooltip.gacha_ticket.type",
+                            ticketType
+                    )
+            );
     }
 }

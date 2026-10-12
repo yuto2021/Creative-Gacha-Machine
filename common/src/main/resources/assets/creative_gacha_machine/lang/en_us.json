@@ -38,7 +38,7 @@
   "gui.gacha_group_library.duplicate": "Duplicate",
   "message.creative_gacha_machine.cannot_delete_last_group": "The last group cannot be deleted",
   "message.creative_gacha_machine.not_enough_money": "Insufficient Payment",
-  "tooltip.gacha_creative_machine.name": "Name: %s",
-  "tooltip.gacha_creative_machine.type": "Type: %s",
+  "tooltip.gacha_ticket.name": "Gacha Ticket Name: %s",
+  "tooltip.gacha_ticket.type": "Gacha Ticket Type: %s",
   "gui.creative_gacha_machine.ticket_payment": "Ticket Payment"
 }
