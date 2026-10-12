@@ -353,6 +353,19 @@ public class GachaMachineScreen extends AbstractContainerScreen<GachaMachineMenu
                 editingWeight = true;
                 editingSlot = slot.index;
 
+                GachaPage page =
+                        ClientPageCache.getPage(
+                                menu.getCurrentPage()
+                        );
+
+                if (page != null) {
+                    weightBox.setValue(
+                            String.valueOf(
+                                    page.getWeight(slot.index)
+                            )
+                    );
+                }
+
                 weightBox.setFocused(true);
                 setFocused(weightBox);
 

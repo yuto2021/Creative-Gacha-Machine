@@ -2,6 +2,7 @@ package com.valuedapecx.creativegachamachine.block;
 
 import com.valuedapecx.creativegachamachine.blockentity.GachaMachineBlockEntity;
 import com.valuedapecx.creativegachamachine.data.GachaGroup;
+import com.valuedapecx.creativegachamachine.data.GachaMachineMode;
 import com.valuedapecx.creativegachamachine.data.GachaResult;
 import com.valuedapecx.creativegachamachine.registry.ModItems;
 import net.minecraft.core.BlockPos;
@@ -73,8 +74,20 @@ public class GachaMachineBlock extends Block implements EntityBlock {
     }
 
     @Override
-    public float getDestroyProgress(BlockState state, Player player, BlockGetter level, BlockPos pos) {
-        if (!player.isCreative()) {
+    public float getDestroyProgress(
+            BlockState state,
+            Player player,
+            BlockGetter level,
+            BlockPos pos
+    ) {
+        if (state.getValue(HALF) == DoubleBlockHalf.UPPER) {
+            pos = pos.below();
+        }
+
+        BlockEntity be = level.getBlockEntity(pos);
+        if (be instanceof GachaMachineBlockEntity machine
+                && machine.getMode() == GachaMachineMode.RUNNING) {
+            System.out.println("destroy progress");
             return 0.0F;
         }
 
@@ -95,9 +108,19 @@ public class GachaMachineBlock extends Block implements EntityBlock {
         return state;
     }
 
-    @Nullable @Override
-    public BlockEntity newBlockEntity(BlockPos pos, BlockState state) {
-        return new GachaMachineBlockEntity(pos, state);
+    @Override
+    public BlockEntity newBlockEntity(
+            BlockPos pos,
+            BlockState state
+    ) {
+        if (state.getValue(HALF) == DoubleBlockHalf.UPPER) {
+            return null;
+        }
+
+        return new GachaMachineBlockEntity(
+                pos,
+                state
+        );
     }
 
     @Override

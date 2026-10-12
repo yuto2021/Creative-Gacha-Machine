@@ -550,14 +550,31 @@ public final class NeoForgePayloads {
                                 return;
                             }
 
-                            ClientPageCache.setPage(
-                                    payload.page(),
+                            GachaPage page =
                                     GachaPage.load(
                                             payload.pageTag(),
                                             minecraft.level.registryAccess()
-                                    )
+                                    );
+
+                            System.out.println(
+                                    "CLIENT SYNC PAGE="
+                                            + payload.page()
                             );
 
+                            System.out.println(
+                                    "CLIENT WEIGHT SLOT0="
+                                            + page.getWeight(0)
+                            );
+
+                            System.out.println(
+                                    "CLIENT WEIGHT SLOT9="
+                                            + page.getWeight(9)
+                            );
+
+                            ClientPageCache.setPage(
+                                    payload.page(),
+                                    page
+                            );
                         })
         );
         registrar.playToServer(
@@ -565,6 +582,12 @@ public final class NeoForgePayloads {
                 SaveWeightPayload.STREAM_CODEC,
                 (payload, context) ->
                         context.enqueueWork(() -> {
+
+                            System.out.println(
+                                    "SAVE PAGE=" + payload.page()
+                                            + " SLOT=" + payload.slot()
+                                            + " WEIGHT=" + payload.weight()
+                            );
 
                             ServerPlayer player =
                                     (ServerPlayer) context.player();
@@ -580,6 +603,11 @@ public final class NeoForgePayloads {
                             if (blockEntity == null) {
                                 return;
                             }
+
+                            System.out.println(
+                                    "CURRENT PAGE=" +
+                                            blockEntity.getCurrentPage()
+                            );
 
                             GachaPage page =
                                     blockEntity.getCurrentPageData();
@@ -601,7 +629,6 @@ public final class NeoForgePayloads {
                                             )
                                     )
                             );
-
                         })
         );
     }
