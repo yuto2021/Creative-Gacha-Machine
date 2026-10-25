@@ -1,6 +1,7 @@
 package com.valuedapecx.creativegachamachine.block;
 
 import com.valuedapecx.creativegachamachine.blockentity.GachaMachineBlockEntity;
+import com.valuedapecx.creativegachamachine.data.DisplayState;
 import com.valuedapecx.creativegachamachine.data.GachaGroup;
 import com.valuedapecx.creativegachamachine.data.GachaMachineMode;
 import com.valuedapecx.creativegachamachine.data.GachaResult;
@@ -22,12 +23,11 @@ import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.block.EntityBlock;
 import net.minecraft.world.level.block.HorizontalDirectionalBlock;
+import net.minecraft.world.level.block.entity.BlockEntityTicker;
+import net.minecraft.world.level.block.entity.BlockEntityType;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.block.state.StateDefinition;
-import net.minecraft.world.level.block.state.properties.BlockStateProperties;
-import net.minecraft.world.level.block.state.properties.DirectionProperty;
-import net.minecraft.world.level.block.state.properties.DoubleBlockHalf;
-import net.minecraft.world.level.block.state.properties.EnumProperty;
+import net.minecraft.world.level.block.state.properties.*;
 import net.minecraft.world.level.block.entity.BlockEntity;
 
 import net.minecraft.world.phys.BlockHitResult;
@@ -40,6 +40,10 @@ public class GachaMachineBlock extends Block implements EntityBlock {
 
     public static final EnumProperty<DoubleBlockHalf> HALF = BlockStateProperties.DOUBLE_BLOCK_HALF;
 
+    public static final IntegerProperty DISPLAY = IntegerProperty.create(
+            "display", 0, 4
+    );
+
     public GachaMachineBlock(Properties properties) {
         super(properties);
 
@@ -47,12 +51,13 @@ public class GachaMachineBlock extends Block implements EntityBlock {
                 stateDefinition.any()
                         .setValue(FACING, Direction.NORTH)
                         .setValue(HALF, DoubleBlockHalf.LOWER)
+                        .setValue(DISPLAY, 0)
         );
     }
 
     @Override
     protected void createBlockStateDefinition(StateDefinition.Builder<Block, BlockState> builder) {
-        builder.add(FACING, HALF);
+        builder.add(FACING, HALF, DISPLAY);
     }
 
     @Override
@@ -69,8 +74,27 @@ public class GachaMachineBlock extends Block implements EntityBlock {
     }
 
     @Override
-    public void setPlacedBy(Level level, BlockPos pos, BlockState state, @Nullable LivingEntity placer, ItemStack stack) {
-        level.setBlock(pos.above(), state.setValue(HALF, DoubleBlockHalf.UPPER), Block.UPDATE_ALL);
+    public void setPlacedBy(
+            Level level,
+            BlockPos pos,
+            BlockState state,
+            @Nullable LivingEntity placer,
+            ItemStack stack
+    ) {
+        level.setBlock(
+                pos.above(),
+                state.setValue(HALF, DoubleBlockHalf.UPPER),
+                Block.UPDATE_ALL
+        );
+
+        if (!level.isClientSide()) {
+            System.out.println(
+                    "BE = " + level.getBlockEntity(pos)
+            );
+            if (level.getBlockEntity(pos) instanceof GachaMachineBlockEntity machine) {
+                machine.createDisplay();
+            }
+        }
     }
 
     @Override
@@ -132,36 +156,22 @@ public class GachaMachineBlock extends Block implements EntityBlock {
             boolean movedByPiston
     ) {
 
-        if (state.getBlock()
-                == newState.getBlock()) {
+        if (state.getBlock() == newState.getBlock()) {
             return;
         }
 
-        DoubleBlockHalf half =
-                state.getValue(
-                        HALF
-                );
+        DoubleBlockHalf half = state.getValue(HALF);
 
-        BlockPos otherPos =
-                half == DoubleBlockHalf.LOWER
+        BlockPos otherPos = half == DoubleBlockHalf.LOWER ? pos.above() : pos.below();
 
-                        ? pos.above()
+        BlockState otherState = level.getBlockState(otherPos);
 
-                        : pos.below();
+        if (otherState.is(this) && otherState.getValue(HALF) != half) {
+            level.destroyBlock(otherPos, false);
+        }
 
-        BlockState otherState =
-                level.getBlockState(
-                        otherPos
-                );
-
-        if (otherState.is(this)
-                && otherState.getValue(HALF)
-                != half) {
-
-            level.destroyBlock(
-                    otherPos,
-                    false
-            );
+        if (level.getBlockEntity(pos) instanceof GachaMachineBlockEntity machine) {
+            machine.removeDisplay();
         }
 
         super.onRemove(
@@ -212,7 +222,6 @@ public class GachaMachineBlock extends Block implements EntityBlock {
         }
 
         switch (machine.getMode()) {
-
             case CONFIG -> player.openMenu(machine);
 
             case PAYMENT -> player.openMenu(
@@ -220,28 +229,57 @@ public class GachaMachineBlock extends Block implements EntityBlock {
             );
 
             case RUNNING -> {
+                if (player.isShiftKeyDown() && machine.isRollable() && machine.isTollGacha()) {
+                    machine.addRollable(-1);
+                    machine.returnPayment(player);
 
-                if (!machine.canPay(player)) {
+                    player.displayClientMessage(
+                            Component.translatable(
+                                    "message.creative_gacha_machine.payment_returned"
+                            ),
+                            true
+                    );
+
+                    machine.resetState();
+
+                    return InteractionResult.SUCCESS;
+                }
+
+                if (machine.canPay(player) && machine.isTollGacha()) {
+                    machine.setDisplayState(DisplayState.LOADED);
+
+                    machine.addRollable(1);
+
+                    machine.consumePayment(player);
+
+                    return InteractionResult.SUCCESS;
+                }
+
+                if (machine.isRollable() || !machine.isTollGacha()) {
+                    if (machine.isRollable()) machine.addRollable(-1);
+
+                    machine.setDisplayState(DisplayState.DISPENSING);
+
+                    for (GachaGroup group : machine.getGroups()) {
+                        for (int i = 0; i < group.getRollCount(); i++) {
+                            GachaResult result = machine.selectReward(group);
+
+                            machine.dispenseReward(result);
+                        }
+                    }
+
+                    machine.setDisplayStateForTicks(DisplayState.DISPENSED, 60);
+                } else {
+                    machine.setDisplayState(DisplayState.NO_MONEY);
+
                     player.displayClientMessage(
                             Component.translatable(
                                     "message.creative_gacha_machine.not_enough_money"
                             ),
                             true
                     );
-
-                    return InteractionResult.SUCCESS;
                 }
-
-                machine.consumePayment(player);
-
-                for (GachaGroup group : machine.getGroups()) {
-                    for (int i = 0; i < group.getRollCount(); i++) {
-                        GachaResult result =
-                                machine.selectReward(group);
-
-                        machine.dispenseReward(result);
-                    }
-                }
+                return InteractionResult.SUCCESS;
             }
         }
 
@@ -274,24 +312,49 @@ public class GachaMachineBlock extends Block implements EntityBlock {
         }
 
         if (!level.isClientSide()) {
+            if (!machine.isRollable()) {
+                machine.nextMode();
 
-            machine.nextMode();
-
-            player.displayClientMessage(
-                    Component.translatable(
-                            switch (machine.getMode()) {
-                                case CONFIG ->
-                                        "mode.creative_gacha_machine.config";
-                                case PAYMENT ->
-                                        "mode.creative_gacha_machine.payment";
-                                case RUNNING ->
-                                        "mode.creative_gacha_machine.running";
-                            }
-                    ),
-                    true
-            );
+                player.displayClientMessage(
+                        Component.translatable(
+                                switch (machine.getMode()) {
+                                    case CONFIG -> "mode.creative_gacha_machine.config";
+                                    case PAYMENT -> "mode.creative_gacha_machine.payment";
+                                    case RUNNING -> "mode.creative_gacha_machine.running";
+                                }
+                        ),
+                        true
+                );
+            } else {
+                player.displayClientMessage(
+                        Component.translatable(
+                                "message.creative_gacha_machine.cannot_change_mode_rollable"
+                        ),
+                        true
+                );
+            }
         }
 
         return ItemInteractionResult.SUCCESS;
+    }
+
+    @Override
+    public <T extends BlockEntity> BlockEntityTicker<T> getTicker(
+            Level level,
+            BlockState state,
+            BlockEntityType<T> type
+    ) {
+        return (tickerLevel, pos, blockState, blockEntity) -> {
+
+            if (blockEntity instanceof GachaMachineBlockEntity machine) {
+
+                GachaMachineBlockEntity.tick(
+                        tickerLevel,
+                        pos,
+                        blockState,
+                        machine
+                );
+            }
+        };
     }
 }

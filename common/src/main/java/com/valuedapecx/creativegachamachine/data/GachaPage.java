@@ -52,12 +52,6 @@ public class GachaPage {
     public CompoundTag save(
             HolderLookup.Provider registries
     ) {
-        for (int i = 0; i < 54; i++) {
-            if (!slots[i].getStack().isEmpty()) {
-                System.out.println("SAVE SLOT " + i + " = " + slots[i].getStack());
-            }
-        }
-
         CompoundTag tag = new CompoundTag();
         ListTag slotsTag = new ListTag();
 
@@ -68,12 +62,6 @@ public class GachaPage {
             CompoundTag slotTag = new CompoundTag();
 
             if (!slot.getStack().isEmpty()) {
-
-                System.out.println(
-                        "SAVING SLOT " + i + " -> "
-                                + slot.getStack()
-                );
-
                 slotTag.put(
                         "Item",
                         slot.getStack().save(registries)

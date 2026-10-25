@@ -249,15 +249,6 @@ public class GachaMachineScreen extends AbstractContainerScreen<GachaMachineMenu
             Slot slot = menu.slots.get(slotIndex);
             GachaPage page = ClientPageCache.getPage(menu.getCurrentPage());
 
-            System.out.println(
-                    "TOOLTIP PAGE=" + menu.getCurrentPage()
-                            + " SLOT=" + slotIndex
-                            + " CACHE="
-                            + (page == null
-                            ? "NULL"
-                            : page.getWeight(slotIndex))
-            );
-
             float weight = page != null ? page.getWeight(slotIndex) : 1.0F;
 
             if (menu.getCarried().isEmpty() && !slot.hasItem()) {
