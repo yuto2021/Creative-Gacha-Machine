@@ -229,8 +229,7 @@ public class GachaMachineBlock extends Block implements EntityBlock {
             );
 
             case RUNNING -> {
-                if (player.isShiftKeyDown() && machine.isRollable() && machine.isTollGacha()) {
-                    machine.addRollable(-1);
+                if (player.isShiftKeyDown() && machine.isRollable()) {
                     machine.returnPayment(player);
 
                     player.displayClientMessage(
