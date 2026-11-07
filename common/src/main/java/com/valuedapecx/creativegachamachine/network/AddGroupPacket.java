@@ -14,13 +14,13 @@ public class AddGroupPacket {
 
     public AddGroupPacket() {}
 
-    public static void encode(AddGroupPacket packet, FriendlyByteBuf buf) {}
+    public static void encode(AddGroupPacket ignoredPacket, FriendlyByteBuf ignoredBuf) {}
 
-    public static AddGroupPacket decode(FriendlyByteBuf buf) {
+    public static AddGroupPacket decode(FriendlyByteBuf ignoredBuf) {
         return new AddGroupPacket();
     }
 
-    public static void handle(AddGroupPacket packet, Supplier<NetworkManager.PacketContext> context) {
+    public static void handle(AddGroupPacket ignoredPacket, Supplier<NetworkManager.PacketContext> context) {
         context.get().queue(() -> {
             ServerPlayer player = (ServerPlayer) context.get().getPlayer();
 

@@ -49,12 +49,6 @@ public class GachaPage {
     }
 
     public CompoundTag save() {
-        for (int i = 0; i < 54; i++) {
-            if (!slots[i].getStack().isEmpty()) {
-                System.out.println("SAVE SLOT " + i + " = " + slots[i].getStack());
-            }
-        }
-
         CompoundTag tag = new CompoundTag();
         ListTag slotsTag = new ListTag();
 

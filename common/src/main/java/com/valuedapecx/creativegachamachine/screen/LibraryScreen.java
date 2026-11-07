@@ -44,7 +44,6 @@ public class LibraryScreen extends Screen {
             double mouseY,
             double delta
     ) {
-
         if (delta > 0) {
             scrollOffset--;
         }
@@ -59,7 +58,7 @@ public class LibraryScreen extends Screen {
                         0,
                         Math.max(
                                 0,
-                                groups.size() + 1 - VISIBLE_COUNT
+                                (groups.size() + 1) - VISIBLE_COUNT
                         )
                 );
 
@@ -98,7 +97,6 @@ public class LibraryScreen extends Screen {
         int totalEntries = groups.size() + 1;
 
         for (int i = 0; i < VISIBLE_COUNT; i++) {
-
             int index = scrollOffset + i;
 
             if (index >= totalEntries) {
@@ -120,7 +118,9 @@ public class LibraryScreen extends Screen {
 
                 graphics.drawCenteredString(
                         font,
-                        Component.literal("+ Add Group"),
+                        Component.literal("+ ").append(Component.translatable(
+                                "gui.gacha_group_library.add_count"
+                        )),
                         width / 2,
                         boxY + 6,
                         0xFFFFFF
@@ -149,13 +149,56 @@ public class LibraryScreen extends Screen {
 
             graphics.drawString(
                     font,
-                    Component.translatable(
-                            "gui.gacha_group_library.roll_total",
-                            group.getRollCount()
-                    ),
+                    Component.translatable("gui.gacha_group_library.roll_total", group.getRollCount()),
                     x + 140,
                     boxY + 6,
                     0xAAAAAA
+            );
+        }
+
+        int visibleGroups = Math.min(groups.size(), VISIBLE_COUNT);
+
+        if (groups.size() + 1 > VISIBLE_COUNT) {
+
+            int barX = width / 2 + 110;
+
+            int barY = 50;
+
+            int barHeight = VISIBLE_COUNT * 24;
+
+            graphics.fill(
+                    barX,
+                    barY,
+                    barX + 6,
+                    barY + barHeight,
+                    0xFF303030
+            );
+
+            int knobHeight =
+                    Math.max(
+                            12,
+                            barHeight * VISIBLE_COUNT / totalEntries
+                    );
+
+            int maxScroll =
+                    totalEntries - VISIBLE_COUNT;
+
+            int knobY =
+                    barY +
+                            (
+                                    maxScroll == 0
+                                            ? 0
+                                            : (barHeight - knobHeight)
+                                            * scrollOffset
+                                            / maxScroll
+                            );
+
+            graphics.fill(
+                    barX,
+                    knobY,
+                    barX + 6,
+                    knobY + knobHeight,
+                    0xFFFFFFFF
             );
         }
 
@@ -224,48 +267,6 @@ public class LibraryScreen extends Screen {
                     0xFFFFFF
             );
         }
-
-        if (groups.size() + 1 > VISIBLE_COUNT) {
-
-            int barX = width / 2 + 110;
-            int barY = 50;
-            int barHeight = VISIBLE_COUNT * 24;
-
-            graphics.fill(
-                    barX,
-                    barY,
-                    barX + 6,
-                    barY + barHeight,
-                    0xFF333333
-            );
-
-            int knobHeight =
-                    Math.max(
-                            12,
-                            barHeight * VISIBLE_COUNT / totalEntries
-                    );
-
-            int maxScroll =
-                    totalEntries - VISIBLE_COUNT;
-
-            int knobY =
-                    barY +
-                            (
-                                    maxScroll == 0
-                                            ? 0
-                                            : (barHeight - knobHeight)
-                                            * scrollOffset
-                                            / maxScroll
-                            );
-
-            graphics.fill(
-                    barX,
-                    knobY,
-                    barX + 6,
-                    knobY + knobHeight,
-                    0xFFFFFFFF
-            );
-        }
     }
 
     @Override
@@ -317,11 +318,7 @@ public class LibraryScreen extends Screen {
                                     contextMenuIndex < groups.size()
                     ) {
 
-                        ModPackets.CHANNEL.sendToServer(
-                                new DuplicateGroupPacket(
-                                        contextMenuIndex
-                                )
-                        );
+                        ModPackets.CHANNEL.sendToServer(new DuplicateGroupPacket(contextMenuIndex));
                     }
 
                     contextMenuIndex = -1;
@@ -394,81 +391,89 @@ public class LibraryScreen extends Screen {
             contextMenuIndex = -1;
 
             return true;
-        }
+        } else {
+            int startY = 50;
 
-        int startY = 50;
-
-        for (
-                int i = 0;
-                i < VISIBLE_COUNT;
-                i++
-        ) {
-            int index = scrollOffset + i;
-
-            int totalEntries = groups.size() + 1;
-
-            if (index >= totalEntries) {
-                break;
-            }
-
-            int x = width / 2 - 100;
-
-            int y = startY + i * 24;
-
-            if (
-                    mouseX >= x
-                            &&
-                            mouseX <= x + 200
-                            &&
-                            mouseY >= y
-                            &&
-                            mouseY <= y + 20
+            for (
+                    int i = 0;
+                    i < VISIBLE_COUNT;
+                    i++
             ) {
 
-                if (index == groups.size()) {
+                int index = scrollOffset + i;
+
+                int totalEntries = groups.size() + 1;
+
+                if (index >= totalEntries) {
+                    break;
+                }
+
+                int x = width / 2 - 100;
+
+                int y = startY + i * 24;
+
+                if (
+                        mouseX >= x
+                                &&
+                                mouseX <= x + 200
+                                &&
+                                mouseY >= y
+                                &&
+                                mouseY <= y + 20
+                ) {
+                    if (index == groups.size()) {
+                        if (button == 0) {
+                            System.out.println(
+                                    "clicked add group button"
+                            );
+
+                            ModPackets.CHANNEL.sendToServer(new AddGroupPacket());
+                            return true;
+                        }
+
+                        return true;
+                    }
+
+                    GachaGroup group =
+                            groups.get(index);
 
                     if (button == 0) {
-                        ModPackets.CHANNEL.sendToServer(
-                                new AddGroupPacket()
+                        System.out.println(
+                                "clicked index=" + index
                         );
+
+                        if (minecraft != null) {
+                            minecraft.getSoundManager().play(SimpleSoundInstance.forUI(SoundEvents.UI_BUTTON_CLICK, 1.0F));
+                        }
+
+                        ModPackets.CHANNEL.sendToServer(new SelectGroupPacket(
+                                index
+                        ));
+
+                        onClose();
+
+                        return true;
+                    }
+
+                    if (button == 1) {
+                        System.out.println(
+                                "right-clicked index=" + index
+                        );
+
+                        if (minecraft != null) {
+                            minecraft.getSoundManager().play(SimpleSoundInstance.forUI(SoundEvents.UI_BUTTON_CLICK, 1.0F));
+                        }
+
+                        contextMenuIndex = index;
+
+                        contextMenuX = (int) mouseX;
+                        contextMenuY = (int) mouseY;
+
                         return true;
                     }
 
                     return true;
                 }
-
-                GachaGroup group = groups.get(index);
-
-                if (button == 0) {
-                    if (minecraft != null) {
-                        minecraft.getSoundManager().play(SimpleSoundInstance.forUI(SoundEvents.UI_BUTTON_CLICK, 1.0F));
-                    }
-
-                    ModPackets.CHANNEL.sendToServer(
-                            new SelectGroupPacket(
-                                    index
-                            )
-                    );
-
-                    onClose();
-
-                    return true;
-                }
-
-                if (button == 1) {
-                    if (minecraft != null) {
-                        minecraft.getSoundManager().play(SimpleSoundInstance.forUI(SoundEvents.UI_BUTTON_CLICK, 1.0F));
-                    }
-
-                    contextMenuIndex = index;
-
-                    contextMenuX = (int) mouseX;
-                    contextMenuY = (int) mouseY;
-
-                    return true;
-                }
-
-                return true;
             }
         }
 

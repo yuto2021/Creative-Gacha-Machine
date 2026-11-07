@@ -1,0 +1,27 @@
+{
+	"credit": "Made with Blockbench",
+	"textures": {
+		"block": "creative_gacha_machine:block/gacha_machine_block",
+		"payment": "creative_gacha_machine:block/gacha_machine_payment",
+		"exit": "creative_gacha_machine:block/gacha_machine_exits",
+		"roll": "creative_gacha_machine:block/gacha_machine_roll",
+		"glass": "creative_gacha_machine:block/gacha_machine_glass",
+		"blank": "creative_gacha_machine:block/gacha_machine_blank",
+		"free_roll": "creative_gacha_machine:block/gacha_machine_roll_no_money",
+		"particle": "creative_gacha_machine:block/gacha_machine_exits"
+	},
+	"elements": [
+		{
+			"from": [0, 0, 0],
+			"to": [16, 16, 16],
+			"faces": {
+				"north": {"uv": [0, 0, 16, 16], "texture": "#roll"},
+				"east": {"uv": [0, 0, 16, 16], "texture": "#block"},
+				"south": {"uv": [0, 0, 16, 16], "texture": "#block"},
+				"west": {"uv": [0, 0, 16, 16], "texture": "#block"},
+				"up": {"uv": [0, 0, 16, 16], "texture": "#block"},
+				"down": {"uv": [0, 0, 16, 16], "texture": "#block"}
+			}
+		}
+	]
+}

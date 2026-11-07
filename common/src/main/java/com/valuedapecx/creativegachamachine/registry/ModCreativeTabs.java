@@ -18,8 +18,7 @@ public final class ModCreativeTabs {
             );
 
     public static final RegistrySupplier<CreativeModeTab>
-            GACHA_TAB =
-            CREATIVE_TABS.register(
+            GACHA_TAB = CREATIVE_TABS.register(
                     "gacha_tab",
                     () -> CreativeModeTab.builder(CreativeModeTab.Row.TOP, 0)
                             .title(

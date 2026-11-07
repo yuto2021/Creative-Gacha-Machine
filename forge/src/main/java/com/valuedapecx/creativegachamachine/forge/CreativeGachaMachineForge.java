@@ -6,8 +6,8 @@ import net.minecraftforge.fml.common.Mod;
 import net.minecraftforge.fml.javafmlmod.FMLJavaModLoadingContext;
 
 @Mod(CreativeGachaMachine.MOD_ID)
-public final class ExampleModForge {
-    public ExampleModForge() {
+public final class CreativeGachaMachineForge {
+    public CreativeGachaMachineForge() {
         // Submit our event bus to let Architectury API register our content on the right time.
         EventBuses.registerModEventBus(CreativeGachaMachine.MOD_ID, FMLJavaModLoadingContext.get().getModEventBus());
 

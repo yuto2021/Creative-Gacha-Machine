@@ -1,5 +1,6 @@
 package com.valuedapecx.creativegachamachine.screen;
 
+import com.valuedapecx.creativegachamachine.CreativeGachaMachine;
 import com.valuedapecx.creativegachamachine.client.ClientPageCache;
 import com.valuedapecx.creativegachamachine.data.GachaPage;
 import com.valuedapecx.creativegachamachine.menu.GachaMachineMenu;
@@ -10,6 +11,7 @@ import com.valuedapecx.creativegachamachine.registry.ModPackets;
 import net.minecraft.client.gui.GuiGraphics;
 import net.minecraft.client.gui.components.Button;
 import net.minecraft.client.gui.components.EditBox;
+import net.minecraft.client.gui.screens.Screen;
 import net.minecraft.client.gui.screens.inventory.AbstractContainerScreen;
 import net.minecraft.client.resources.sounds.SimpleSoundInstance;
 import net.minecraft.network.chat.Component;
@@ -17,7 +19,6 @@ import net.minecraft.resources.ResourceLocation;
 import net.minecraft.sounds.SoundEvents;
 import net.minecraft.world.entity.player.Inventory;
 import net.minecraft.world.inventory.Slot;
-import net.minecraft.world.item.TooltipFlag;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -25,7 +26,7 @@ import java.util.List;
 public class GachaMachineScreen extends AbstractContainerScreen<GachaMachineMenu> {
 
     private static final ResourceLocation TEXTURE = new ResourceLocation(
-            "creative_gacha_machine",
+            CreativeGachaMachine.MOD_ID,
             "textures/gui/gacha_machine.png"
     );
 
@@ -33,8 +34,6 @@ public class GachaMachineScreen extends AbstractContainerScreen<GachaMachineMenu
     private Button nextButton;
     private Button addButton;
     private Button removeButton;
-
-    private Button libraryButton;
 
     private Component message;
     private int messageTicks;
@@ -83,24 +82,17 @@ public class GachaMachineScreen extends AbstractContainerScreen<GachaMachineMenu
         int x = leftPos;
         int y = topPos;
 
-        removeButton = addRenderableWidget(Button.builder(Component.literal("-"),
-                button -> {
-            System.out.println("REMOVE CLICK");
-            ModPackets.CHANNEL.sendToServer(new GachaPageActionPacket(GachaPageActionPacket.Action.REMOVE));
-        }).bounds(x + 8, y + 18, 20, 20).build());
+        removeButton = addRenderableWidget(Button.builder(Component.literal("-"), button ->
+                ModPackets.CHANNEL.sendToServer(new GachaPageActionPacket(GachaPageActionPacket.Action.REMOVE))).bounds(x + 8, y + 18, 20, 20).build());
 
-        prevButton = addRenderableWidget(Button.builder(Component.literal("<"), button -> {
-            ModPackets.CHANNEL.sendToServer(new GachaPageActionPacket(GachaPageActionPacket.Action.PREVIOUS));
-        }).bounds(x + 40, y + 18, 20, 20).build());
+        prevButton = addRenderableWidget(Button.builder(Component.literal("<"), button ->
+                ModPackets.CHANNEL.sendToServer(new GachaPageActionPacket(GachaPageActionPacket.Action.PREVIOUS))).bounds(x + 40, y + 18, 20, 20).build());
 
-        nextButton = addRenderableWidget(Button.builder(Component.literal(">"), button -> {
-            ModPackets.CHANNEL.sendToServer(new GachaPageActionPacket(GachaPageActionPacket.Action.NEXT));
-        }).bounds(x + 120, y + 18, 20, 20).build());
+        nextButton = addRenderableWidget(Button.builder(Component.literal(">"), button ->
+                ModPackets.CHANNEL.sendToServer(new GachaPageActionPacket(GachaPageActionPacket.Action.NEXT))).bounds(x + 120, y + 18, 20, 20).build());
 
-        addButton = addRenderableWidget(Button.builder(Component.literal("+"), button -> {
-            System.out.println("ADD CLICK");
-            ModPackets.CHANNEL.sendToServer(new GachaPageActionPacket(GachaPageActionPacket.Action.ADD));
-        }).bounds(x + 120, y + 18, 20, 20).build());
+        addButton = addRenderableWidget(Button.builder(Component.literal("+"), button ->
+                ModPackets.CHANNEL.sendToServer(new GachaPageActionPacket(GachaPageActionPacket.Action.ADD))).bounds(x + 120, y + 18, 20, 20).build());
 
         weightBox = new EditBox(font, leftPos + 60, topPos + 35, 60, 18, Component.empty());
 
@@ -127,7 +119,7 @@ public class GachaMachineScreen extends AbstractContainerScreen<GachaMachineMenu
 
         addRenderableWidget(saveWeightButton);
 
-        libraryButton = addRenderableWidget(Button.builder(Component.literal("L"), button -> {
+        Button libraryButton = addRenderableWidget(Button.builder(Component.literal("L"), button -> {
             if (minecraft != null) {
                 minecraft.setScreen(new LibraryScreen());
             }
@@ -161,28 +153,59 @@ public class GachaMachineScreen extends AbstractContainerScreen<GachaMachineMenu
 
     @Override
     public void render(GuiGraphics guiGraphics, int mouseX, int mouseY, float partialTick) {
-        renderBackground(guiGraphics);
+        renderBackground(
+                guiGraphics
+        );
 
         super.render(guiGraphics, mouseX, mouseY, partialTick);
 
-        if (removeButton.isHovered()) guiGraphics.renderTooltip(font,
-                Component.translatable("tooltip.creative_gacha_machine.remove_page"), mouseX, mouseY);
-        if (prevButton.isHovered()) guiGraphics.renderTooltip(font,
-                Component.translatable(
-                        "tooltip.creative_gacha_machine.previous_page"
-                ), mouseX, mouseY);
-        if (nextButton.isHovered()) guiGraphics.renderTooltip(font,
-                Component.translatable(
-                        "tooltip.creative_gacha_machine.next_page"
-                ), mouseX, mouseY);
-        if (addButton.isHovered()) guiGraphics.renderTooltip(font,
-                Component.translatable(
-                        "tooltip.creative_gacha_machine.add_page"
-                ), mouseX, mouseY);
+        // ページボタン系ツールチップ
+        if (removeButton.isMouseOver(mouseX, mouseY)) {
+            guiGraphics.renderTooltip(
+                    font,
+                    Component.translatable(
+                            "tooltip.creative_gacha_machine.remove_page"
+                    ),
+                    mouseX,
+                    mouseY
+            );
+        }
+        else if (prevButton.isMouseOver(mouseX, mouseY)) {
+            guiGraphics.renderTooltip(
+                    font,
+                    Component.translatable(
+                            "tooltip.creative_gacha_machine.previous_page"
+                    ),
+                    mouseX,
+                    mouseY
+            );
+        }
+        else if (nextButton.isMouseOver(mouseX, mouseY)) {
+            guiGraphics.renderTooltip(
+                    font,
+                    Component.translatable(
+                            "tooltip.creative_gacha_machine.next_page"
+                    ),
+                    mouseX,
+                    mouseY
+            );
+        }
+        else if (addButton.isMouseOver(mouseX, mouseY)) {
+            guiGraphics.renderTooltip(
+                    font,
+                    Component.translatable(
+                            "tooltip.creative_gacha_machine.add_page"
+                    ),
+                    mouseX,
+                    mouseY
+            );
+        }
 
         if (messageTicks > 0 && message != null) guiGraphics.renderTooltip(
                 font, message, removeButton.getX(), removeButton.getY() - 15
         );
+
+        boolean renderedCustomTooltip = false;
 
         for (int slotIndex = 0; slotIndex < 54; slotIndex++) {
             int slotX = leftPos + 8 + (slotIndex % 9) * 18;
@@ -194,7 +217,10 @@ public class GachaMachineScreen extends AbstractContainerScreen<GachaMachineMenu
                 continue;
             }
 
-            if (editingWeight) break;
+            if (editingWeight) {
+                renderedCustomTooltip = true;
+                break;
+            }
 
             Slot slot = menu.slots.get(slotIndex);
             GachaPage page = ClientPageCache.getPage(menu.getCurrentPage());
@@ -210,26 +236,46 @@ public class GachaMachineScreen extends AbstractContainerScreen<GachaMachineMenu
                             Component.translatable("tooltip.creative_gacha_machine.enable_slot")
                     ), mouseX, mouseY);
                 } else {
-                    guiGraphics.renderTooltip(font,
-                            Component.translatable("tooltip.creative_gacha_machine.disable_slot"), mouseX, mouseY);
+                    guiGraphics.renderTooltip(font, Component.translatable("tooltip.creative_gacha_machine.disable_slot"), mouseX, mouseY);
                 }
+                renderedCustomTooltip = true;
             } else if (slot.hasItem()) {
                 if (minecraft == null || minecraft.player == null) {
                     break;
                 }
 
-                List<Component> tooltip = new ArrayList<>(slot.getItem().getTooltipLines(minecraft.player,
-                        minecraft.options.advancedItemTooltips
-                                ? TooltipFlag.Default.ADVANCED : TooltipFlag.Default.NORMAL)
-                );
+                List<Component> tooltip =
+                        new ArrayList<>(
+                                Screen.getTooltipFromItem(
+                                        minecraft,
+                                        slot.getItem()
+                                )
+                        );
 
                 tooltip.add(Component.empty());
 
-                tooltip.add(Component.translatable("tooltip.creative_gacha_machine.weight", weight));
+                tooltip.add(
+                        Component.translatable(
+                                "tooltip.creative_gacha_machine.weight",
+                                weight
+                        )
+                );
 
-                tooltip.add(Component.translatable("tooltip.creative_gacha_machine.edit_item_weight"));
+                tooltip.add(
+                        Component.translatable(
+                                "tooltip.creative_gacha_machine.edit_item_weight"
+                        )
+                );
 
-                guiGraphics.renderComponentTooltip(font, tooltip, mouseX, mouseY);
+                guiGraphics.renderTooltip(
+                        font,
+                        tooltip,
+                        slot.getItem().getTooltipImage(),
+                        mouseX,
+                        mouseY
+                );
+
+                renderedCustomTooltip = true;
             }
 
             break;
@@ -257,6 +303,14 @@ public class GachaMachineScreen extends AbstractContainerScreen<GachaMachineMenu
             weightBox.visible = false;
             saveWeightButton.visible = false;
         }
+
+        if (!renderedCustomTooltip) {
+            renderTooltip(
+                    guiGraphics,
+                    mouseX,
+                    mouseY
+            );
+        }
     }
 
     public void showMessage(Component component) {
@@ -266,6 +320,18 @@ public class GachaMachineScreen extends AbstractContainerScreen<GachaMachineMenu
 
     @Override
     public boolean mouseClicked(double mouseX, double mouseY, int button) {
+        if (editingWeight) {
+            return weightBox.mouseClicked(
+                    mouseX,
+                    mouseY,
+                    button
+            ) || saveWeightButton.mouseClicked(
+                    mouseX,
+                    mouseY,
+                    button
+            );
+        }
+
         System.out.println("BUTTON = " + button);
 
         Slot slot = hoveredSlot;
@@ -287,6 +353,23 @@ public class GachaMachineScreen extends AbstractContainerScreen<GachaMachineMenu
 
                 editingWeight = true;
                 editingSlot = slot.index;
+
+                GachaPage page =
+                        ClientPageCache.getPage(
+                                menu.getCurrentPage()
+                        );
+
+                if (page != null) {
+                    weightBox.setValue(
+                            String.valueOf(
+                                    page.getWeight(slot.index)
+                            )
+                    );
+                }
+
+                weightBox.setFocused(true);
+                setFocused(weightBox);
+
                 return true;
             }
         }
@@ -295,32 +378,38 @@ public class GachaMachineScreen extends AbstractContainerScreen<GachaMachineMenu
     }
 
     @Override
-    public boolean keyPressed(int keyCode, int scanCode, int modifiers) {
+    public boolean keyPressed(
+            int keyCode,
+            int scanCode,
+            int modifiers
+    ) {
         if (editingWeight) {
-            // Enter
+
             if (keyCode == 257 || keyCode == 335) {
                 confirmWeight();
                 return true;
             }
 
-            // ESC無効
             if (keyCode == 256) {
                 return true;
             }
 
-            if (minecraft == null){
-                return true;
+            if (weightBox.isFocused()) {
+                return weightBox.keyPressed(
+                        keyCode,
+                        scanCode,
+                        modifiers
+                );
             }
 
-            // E無効
-            if (minecraft.options.keyInventory.matches(keyCode, scanCode)) {
-                return true;
-            }
-
-            return weightBox.keyPressed(keyCode, scanCode, modifiers);
+            return true;
         }
 
-        return super.keyPressed(keyCode, scanCode, modifiers);
+        return super.keyPressed(
+                keyCode,
+                scanCode,
+                modifiers
+        );
     }
 
     @Override

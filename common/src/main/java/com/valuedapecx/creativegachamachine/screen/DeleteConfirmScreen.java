@@ -25,16 +25,14 @@ public class DeleteConfirmScreen extends Screen {
         int centerX = width / 2;
         int centerY = height / 2;
 
-        addRenderableWidget(Button.builder(Component.translatable("gui.gacha_group_library.delete"),
-                        button -> {
+        addRenderableWidget(Button.builder(Component.translatable("gui.gacha_group_library.delete"), button -> {
             ModPackets.CHANNEL.sendToServer(new DeleteGroupPacket(groupIndex));
             if (minecraft != null) {
                 minecraft.setScreen(parent);
             }
         }).bounds(centerX - 90, centerY + 30, 80, 20).build());
 
-        addRenderableWidget(Button.builder(Component.translatable("gui.gacha_group_library.cancel"),
-                        button -> {
+        addRenderableWidget(Button.builder(Component.translatable("gui.gacha_group_library.cancel"), button -> {
             if (minecraft != null) {
                 minecraft.setScreen(parent);
             }
@@ -43,7 +41,9 @@ public class DeleteConfirmScreen extends Screen {
 
     @Override
     public void render(GuiGraphics graphics, int mouseX, int mouseY, float partialTick) {
-        renderBackground(graphics);
+        renderBackground(
+                graphics
+        );
 
         super.render(graphics, mouseX, mouseY, partialTick);
 

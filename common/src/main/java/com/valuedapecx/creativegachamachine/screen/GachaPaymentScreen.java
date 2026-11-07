@@ -2,8 +2,6 @@ package com.valuedapecx.creativegachamachine.screen;
 
 import com.valuedapecx.creativegachamachine.CreativeGachaMachine;
 import com.valuedapecx.creativegachamachine.menu.GachaPaymentMenu;
-import com.valuedapecx.creativegachamachine.network.OpenTicketPaymentPacket;
-import com.valuedapecx.creativegachamachine.registry.ModPackets;
 import net.minecraft.client.gui.GuiGraphics;
 import net.minecraft.client.gui.components.Button;
 import net.minecraft.client.gui.screens.inventory.AbstractContainerScreen;
@@ -17,8 +15,7 @@ public class GachaPaymentScreen
                 GachaPaymentMenu> {
 
     private static final ResourceLocation
-            TEXTURE =
-            new ResourceLocation(
+            TEXTURE = new ResourceLocation(
                     CreativeGachaMachine.MOD_ID,
                     "textures/gui/payment.png"
             );
@@ -108,6 +105,7 @@ public class GachaPaymentScreen
     @Override
     protected void init() {
         super.init();
+
         /*
         Button ticketButton =
                 Button.builder(
@@ -117,9 +115,7 @@ public class GachaPaymentScreen
                         button -> {
                             // パケット送信
                             // Ticket GUIへ切替
-                            ModPackets.CHANNEL.sendToServer(
-                                    new OpenTicketPaymentPacket()
-                            );
+                            PlatformNetworking.sendOpenTicketPayment();
                         }
                 )
                 .bounds(
@@ -143,22 +139,13 @@ public class GachaPaymentScreen
             float partialTick
     ) {
 
-        renderBackground(
-                graphics
-        );
+        renderBackground(graphics);
 
-        super.render(
-                graphics,
-                mouseX,
-                mouseY,
-                partialTick
-        );
+        super.render(graphics, mouseX, mouseY, partialTick);
 
-        Slot slot =
-                hoveredSlot;
+        Slot slot = hoveredSlot;
 
-        if (slot != null
-                && slot.hasItem()) {
+        if (slot != null && slot.hasItem()) {
 
             graphics.renderTooltip(
                     font,

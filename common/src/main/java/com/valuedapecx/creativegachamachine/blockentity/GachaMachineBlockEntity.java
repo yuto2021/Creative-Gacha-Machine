@@ -16,10 +16,14 @@ import net.minecraft.nbt.ListTag;
 import net.minecraft.nbt.Tag;
 import net.minecraft.network.FriendlyByteBuf;
 import net.minecraft.network.chat.Component;
+import net.minecraft.network.protocol.game.ClientboundBlockEntityDataPacket;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.world.Container;
 import net.minecraft.world.MenuProvider;
 import net.minecraft.world.SimpleMenuProvider;
+import net.minecraft.world.entity.Display;
+import net.minecraft.world.entity.Entity;
+import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.item.ItemEntity;
 import net.minecraft.world.entity.player.Inventory;
 import net.minecraft.world.entity.player.Player;
@@ -32,6 +36,7 @@ import org.jetbrains.annotations.NotNull;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.UUID;
 
 public class GachaMachineBlockEntity extends BlockEntity implements Container, MenuProvider, ExtendedMenuProvider {
     private ItemStack paymentItem = ItemStack.EMPTY;
@@ -52,6 +57,14 @@ public class GachaMachineBlockEntity extends BlockEntity implements Container, M
     private boolean ticketOnlyPayment;
     private String requiredTicketName = "";
     private int requiredTicketType = 0;
+
+    private DisplayState displayState = DisplayState.READY;
+
+    private int rollable = 0;
+
+    private int displayTicks = 0;
+
+    private UUID displayUuid;
 
     public GachaMachineBlockEntity(BlockPos pos, BlockState state) {
         super(ModBlockEntities.GACHA_MACHINE.get(), pos, state);
@@ -134,13 +147,10 @@ public class GachaMachineBlockEntity extends BlockEntity implements Container, M
      */
 
     @Override
-    protected void saveAdditional(
-            CompoundTag tag
-    ) {
+    protected void saveAdditional(CompoundTag tag) {
         super.saveAdditional(tag);
 
         tag.putInt("CurrentPage", currentPage);
-
         tag.putInt("CurrentGroup", currentGroup);
 
         ListTag groupsTag = new ListTag();
@@ -150,6 +160,7 @@ public class GachaMachineBlockEntity extends BlockEntity implements Container, M
         }
 
         tag.put("GachaGroups", groupsTag);
+
         tag.putString("Mode", mode.name());
 
         if (!paymentItem.isEmpty()) {
@@ -159,12 +170,17 @@ public class GachaMachineBlockEntity extends BlockEntity implements Container, M
         tag.putBoolean("TicketOnlyPayment", ticketOnlyPayment);
         tag.putString("RequiredTicketName", requiredTicketName);
         tag.putInt("RequiredTicketType", requiredTicketType);
+
+        if (displayUuid != null) {
+            tag.putUUID("DisplayUUID", displayUuid);
+        }
+
+        tag.putInt("Rollable", rollable);
     }
 
+
     @Override
-    public void load(
-            CompoundTag tag
-    ) {
+    public void load(CompoundTag tag) {
         super.load(tag);
 
         currentPage = tag.getInt("CurrentPage");
@@ -178,20 +194,6 @@ public class GachaMachineBlockEntity extends BlockEntity implements Container, M
             groups.add(GachaGroup.load(groupsTag.getCompound(i)));
         }
 
-        if (groups.isEmpty()) {
-            groups.add(new GachaGroup());
-        }
-
-        if (currentPage >= getPageCount()) {
-            currentPage = 0;
-        }
-
-        try {
-            mode = GachaMachineMode.valueOf(tag.getString("Mode"));
-        } catch (Exception e) {
-            mode = GachaMachineMode.CONFIG;
-        }
-
         if (tag.contains("PaymentItem")) {
             paymentItem = ItemStack.of(tag.getCompound("PaymentItem"));
         }
@@ -199,6 +201,12 @@ public class GachaMachineBlockEntity extends BlockEntity implements Container, M
         ticketOnlyPayment = tag.getBoolean("TicketOnlyPayment");
         requiredTicketName = tag.getString("RequiredTicketName");
         requiredTicketType = tag.getInt("RequiredTicketType");
+
+        if (tag.hasUUID("DisplayUUID")) {
+            displayUuid = tag.getUUID("DisplayUUID");
+        }
+
+        rollable = tag.getInt("Rollable");
     }
 
     /*
@@ -306,7 +314,15 @@ public class GachaMachineBlockEntity extends BlockEntity implements Container, M
     public void nextMode() {
         mode = mode.next();
 
+        if (mode == GachaMachineMode.RUNNING) {
+            setDisplayState(isTollGacha() ? DisplayState.NO_MONEY : DisplayState.READY);
+        }
+
         setChanged();
+    }
+
+    public boolean isTollGacha() {
+        return ticketOnlyPayment || !paymentItem.isEmpty();
     }
 
     public ItemStack getPaymentItem() {
@@ -367,7 +383,6 @@ public class GachaMachineBlockEntity extends BlockEntity implements Container, M
             int remove = Math.min(remaining, stack.getCount());
 
             stack.shrink(remove);
-
             remaining -= remove;
 
             if (remaining <= 0) {
@@ -380,6 +395,8 @@ public class GachaMachineBlockEntity extends BlockEntity implements Container, M
         Level level = getLevel();
 
         if (level == null) {
+            setDisplayState(DisplayState.ERROR);
+
             return GachaResult.NONE(-1);
         }
 
@@ -433,9 +450,13 @@ public class GachaMachineBlockEntity extends BlockEntity implements Container, M
                     return GachaResult.REWARD(stack.copy(), slot);
                 }
 
+                setDisplayState(DisplayState.ERROR);
+
                 return GachaResult.NONE(slot);
             }
         }
+
+        setDisplayState(DisplayState.ERROR);
 
         return GachaResult.NONE(0);
     }
@@ -447,9 +468,7 @@ public class GachaMachineBlockEntity extends BlockEntity implements Container, M
                 getBlockState().getValue(GachaMachineBlock.FACING);
 
                 double x = worldPosition.getX() + 0.5D;
-
                 double y = worldPosition.getY() + 0.25D;
-
                 double z = worldPosition.getZ() + 0.5D;
 
                 if (level instanceof ServerLevel serverLevel) {
@@ -491,22 +510,19 @@ public class GachaMachineBlockEntity extends BlockEntity implements Container, M
             return canPayNormal(player);
         }
 
-        for (ItemStack stack : player.getInventory().items) {
-            if (!stack.is(ModItems.GACHA_TICKET.get())) {
-                continue;
-            }
+        ItemStack mainHand = player.getMainHandItem();
 
-            if (!stack.hasTag()) {
-                continue;
-            }
-
-            if (stack.getTag() != null && requiredTicketName.equals(stack.getTag().getString("TicketName"))
-                    && requiredTicketType == stack.getTag().getInt("TicketType")) {
-                return true;
-            }
+        if (!mainHand.is(ModItems.GACHA_TICKET.get())) {
+            return false;
         }
 
-        return false;
+        CompoundTag tag = mainHand.getTag();
+
+        if (tag == null) {
+            return false;
+        }
+
+        return requiredTicketName.equals(tag.getString("TicketName")) && requiredTicketType == tag.getInt("TicketType");
     }
 
     public boolean canPayNormal(Player player) {
@@ -514,15 +530,13 @@ public class GachaMachineBlockEntity extends BlockEntity implements Container, M
             return true;
         }
 
-        int count = 0;
+        ItemStack mainHand = player.getMainHandItem();
 
-        for (ItemStack stack : player.getInventory().items) {
-            if (ItemStack.isSameItemSameTags(stack, paymentItem)) {
-                count += stack.getCount();
-            }
-        }
-
-        return count >= paymentItem.getCount();
+        return ItemStack.isSameItemSameTags(
+                mainHand,
+                paymentItem
+        ) && mainHand.getCount()
+                >= paymentItem.getCount();
     }
 
     public boolean isTicketOnlyPayment() {
@@ -596,5 +610,266 @@ public class GachaMachineBlockEntity extends BlockEntity implements Container, M
 
     public boolean canDeleteGroup() {
         return groups.size() > 1;
+    }
+
+    public DisplayState getDisplayState() {
+        return displayState;
+    }
+
+    public void setDisplayState(
+            DisplayState state
+    ) {
+        this.displayState = state;
+
+        updateDisplay();
+
+        if (level != null) {
+            int value = switch (state) {
+                case READY -> isTollGacha() ? 1 : 2;
+                case LOADED -> 1;
+                case DISPENSING -> isRollable() ? 1 : isTollGacha() ? 1 : 2;
+                case DISPENSED -> isRollable() ? 1 : isTollGacha() ? 1 : 2;
+                case NO_MONEY -> 1;
+                case JACKPOT -> 1;
+                case SOLD_OUT -> 1;
+                case ERROR -> 3;
+            };
+
+            level.setBlock(
+                    worldPosition,
+                    getBlockState()
+                            .setValue(
+                                    GachaMachineBlock.DISPLAY,
+                                    value
+                            ),
+                    3
+            );
+        }
+
+        setChanged();
+    }
+
+    public boolean isRollable() {
+        return rollable > 0;
+    }
+
+    public int getRollableCount() {
+        return rollable;
+    }
+
+    public void addRollable(
+            int i
+    ) {
+        this.rollable += i;
+
+        updateDisplay();
+    }
+
+    public void returnPayment(Player player) {
+        if (rollable <= 0 || paymentItem.isEmpty()) {
+            return;
+        }
+
+        ItemStack refund = paymentItem.copy();
+
+        refund.setCount(paymentItem.getCount() * rollable);
+
+        if (!player.addItem(refund)) {
+            player.drop(refund, false);
+        }
+
+        rollable = 0;
+
+        setChanged();
+    }
+
+    @Override
+    public @NotNull CompoundTag getUpdateTag() {
+        CompoundTag tag = new CompoundTag();
+
+        saveAdditional(tag);
+
+        return tag;
+    }
+
+    @Override
+    public ClientboundBlockEntityDataPacket getUpdatePacket() {
+        return ClientboundBlockEntityDataPacket.create(this);
+    }
+
+    public void resetState() {
+        if (isRollable()) {
+            setDisplayState(DisplayState.LOADED);
+        } else {
+            setDisplayState(isTollGacha() ? DisplayState.NO_MONEY : DisplayState.READY);
+        }
+    }
+
+    public void setDisplayStateForTicks(
+            DisplayState state,
+            int ticks
+    ) {
+        this.displayState = state;
+        this.displayTicks = ticks;
+        setChanged();
+    }
+
+    public static void tick(
+            Level level,
+            BlockPos pos,
+            BlockState state,
+            GachaMachineBlockEntity machine
+    ) {
+        if (level.isClientSide()) {
+            return;
+        }
+
+        if (!(level instanceof ServerLevel)) {
+            return;
+        }
+
+        if (machine.displayTicks > 0) {
+            machine.displayTicks--;
+
+            if (machine.displayTicks <= 0) {
+                machine.setDisplayState(
+                        machine.isTollGacha()
+                                && !machine.isRollable()
+                                ? DisplayState.NO_MONEY
+                                : DisplayState.READY
+                );
+            }
+        }
+
+        if (!machine.hasDisplay()) {
+            machine.createDisplay();
+        }
+    }
+
+    public boolean hasDisplay() {
+        if (!(level instanceof ServerLevel serverLevel)) {
+            return false;
+        }
+
+        return displayUuid != null && serverLevel.getEntity(displayUuid) != null;
+    }
+
+    public void createDisplay() {
+        System.out.println("CREATE DISPLAY");
+
+        if (!(level instanceof ServerLevel serverLevel)) {
+            System.out.println("NOT SERVER");
+            return;
+        }
+
+        Display.TextDisplay display =
+                EntityType.TEXT_DISPLAY.create(
+                        serverLevel
+                );
+
+        if (display == null) {
+            System.out.println("DISPLAY NULL");
+            return;
+        }
+
+        CompoundTag tag = new CompoundTag();
+
+        tag.putString(
+                "text",
+                Component.Serializer.toJson(
+                        Component.literal("残り0回")
+                )
+        );
+
+        display.load(tag);
+
+        Direction facing =
+                getBlockState().getValue(
+                        GachaMachineBlock.FACING
+                );
+
+        float yaw = switch (facing) {
+            case SOUTH -> 0F;
+            case WEST  -> 90F;
+            case NORTH -> 180F;
+            case EAST  -> -90F;
+            default    -> 0F;
+        };
+
+        double x = worldPosition.getX() + 0.5;
+        double y = worldPosition.getY() + 2.2;
+        double z = worldPosition.getZ() + 0.5;
+
+        // ガチャ正面へ少し移動
+        x += facing.getStepX() * 0.35;
+        z += facing.getStepZ() * 0.35;
+
+        display.moveTo(
+                x,
+                y,
+                z,
+                yaw,
+                0F
+        );
+
+        display.setCustomNameVisible(false);
+
+        serverLevel.addFreshEntity(display);
+
+        displayUuid = display.getUUID();
+
+        System.out.println("DISPLAY = " + display + ", UUID:" + displayUuid + ", NBT:" + display.saveWithoutId(new CompoundTag()));
+    }
+
+    public void updateDisplay() {
+
+        if (!(level instanceof ServerLevel serverLevel)) {
+            return;
+        }
+
+        if (displayUuid == null) {
+            return;
+        }
+
+        Entity entity =
+                serverLevel.getEntity(
+                        displayUuid
+                );
+
+        if (!(entity instanceof Display.TextDisplay display)) {
+            return;
+        }
+
+        CompoundTag tag = display.saveWithoutId(new CompoundTag());
+
+        tag.putString(
+                "text",
+                Component.Serializer.toJson(
+                        Component.literal(
+                                "残り" + rollable + "回"
+                        )
+                )
+        );
+
+        display.load(tag);
+    }
+
+    public void removeDisplay() {
+        if (!(level instanceof ServerLevel serverLevel)) {
+            return;
+        }
+
+        if (displayUuid == null) {
+            return;
+        }
+
+        Entity entity =
+                serverLevel.getEntity(
+                        displayUuid
+                );
+
+        if (entity != null) {
+            entity.discard();
+        }
     }
 }

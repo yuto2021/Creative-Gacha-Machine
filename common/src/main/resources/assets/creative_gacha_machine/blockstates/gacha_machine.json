@@ -1,7 +1,79 @@
 {
   "variants": {
-    "": {
-      "model": "creative_gacha_machine:block/gacha_machine"
+    "display=0,half=lower,facing=north": {
+      "model": "creative_gacha_machine:block/gacha_machine_lower_payment"
+    },
+    "display=1,half=lower,facing=north": {
+      "model": "creative_gacha_machine:block/gacha_machine_lower_roll"
+    },
+    "display=2,half=lower,facing=north": {
+      "model": "creative_gacha_machine:block/gacha_machine_lower_free_roll"
+    },
+    "display=3,half=lower,facing=north": {
+      "model": "creative_gacha_machine:block/gacha_machine_lower_error"
+    },
+    "half=upper,facing=north": {
+      "model": "creative_gacha_machine:block/gacha_machine_upper"
+    },
+    "display=0,half=lower,facing=east": {
+      "model": "creative_gacha_machine:block/gacha_machine_lower_payment",
+      "y": 90
+    },
+    "display=1,half=lower,facing=east": {
+      "model": "creative_gacha_machine:block/gacha_machine_lower_roll",
+      "y": 90
+    },
+    "display=2,half=lower,facing=east": {
+      "model": "creative_gacha_machine:block/gacha_machine_lower_free_roll",
+      "y": 90
+    },
+    "display=3,half=lower,facing=east": {
+      "model": "creative_gacha_machine:block/gacha_machine_lower_error",
+      "y": 90
+    },
+    "half=upper,facing=east": {
+      "model": "creative_gacha_machine:block/gacha_machine_upper",
+      "y": 90
+    },
+    "display=0,half=lower,facing=south": {
+      "model": "creative_gacha_machine:block/gacha_machine_lower_payment",
+      "y": 180
+    },
+    "display=1,half=lower,facing=south": {
+      "model": "creative_gacha_machine:block/gacha_machine_lower_roll",
+      "y": 180
+    },
+    "display=2,half=lower,facing=south": {
+      "model": "creative_gacha_machine:block/gacha_machine_lower_free_roll",
+      "y": 180
+    },
+    "display=3,half=lower,facing=south": {
+      "model": "creative_gacha_machine:block/gacha_machine_lower_error",
+      "y": 180
+    },
+    "half=upper,facing=south": {
+      "model": "creative_gacha_machine:block/gacha_machine_upper",
+      "y": 180
+    },
+    "display=0,half=lower,facing=west": {
+      "model": "creative_gacha_machine:block/gacha_machine_lower_payment",
+      "y": 270
+    },
+    "display=1,half=lower,facing=west": {
+      "model": "creative_gacha_machine:block/gacha_machine_lower_roll",
+      "y": 270
+    },
+    "display=2,half=lower,facing=west": {
+      "model": "creative_gacha_machine:block/gacha_machine_lower_free_roll",
+      "y": 270
+    },
+    "display=3,half=lower,facing=west": {
+      "model": "creative_gacha_machine:block/gacha_machine_lower_error",
+      "y": 270
+    },
+    "half=upper,facing=west": {
+      "model": "creative_gacha_machine:block/gacha_machine_upper",
+      "y": 270
     }
   }
 }

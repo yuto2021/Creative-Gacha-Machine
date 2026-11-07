@@ -37,5 +37,8 @@
   "gui.gacha_group_library.duplicate": "複製",
   "message.creative_gacha_machine.cannot_delete_last_group": "最後のグループは削除できません",
   "gui.creative_gacha_machine.payment": "ガチャ設定",
-  "message.creative_gacha_machine.not_enough_money": "料金が不足しています"
+  "message.creative_gacha_machine.not_enough_money": "料金が不足しています",
+  "tooltip.gacha_ticket.name": "チケットの名前: %s",
+  "tooltip.gacha_ticket.type": "チケットの種類: %s",
+  "gui.creative_gacha_machine.ticket_payment": "Ticket Payment"
 }

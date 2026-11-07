@@ -10,15 +10,15 @@ import java.util.function.Supplier;
 
 public class OpenNormalPaymentPacket {
 
-    public static void encode(OpenNormalPaymentPacket packet, FriendlyByteBuf buf) {
+    public static void encode(OpenNormalPaymentPacket ignoredPacket, FriendlyByteBuf ignoredBuf) {
 
     }
 
-    public static OpenNormalPaymentPacket decode(FriendlyByteBuf buf) {
+    public static OpenNormalPaymentPacket decode(FriendlyByteBuf ignoredBuf) {
         return new OpenNormalPaymentPacket();
     }
 
-    public static void handle(OpenNormalPaymentPacket packet, Supplier<NetworkManager.PacketContext> context) {
+    public static void handle(OpenNormalPaymentPacket ignoredPacket, Supplier<NetworkManager.PacketContext> context) {
         context.get().queue(() -> {
             ServerPlayer player = (ServerPlayer) context.get().getPlayer();
 

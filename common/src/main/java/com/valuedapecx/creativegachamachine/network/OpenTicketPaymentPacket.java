@@ -13,14 +13,14 @@ public class OpenTicketPaymentPacket {
         System.out.println("SEND OPEN TICKET PAYMENT");
     }
 
-    public static void encode(OpenTicketPaymentPacket packet, FriendlyByteBuf buf) {
+    public static void encode(OpenTicketPaymentPacket ignoredPacket, FriendlyByteBuf ignoredBuf) {
     }
 
-    public static OpenTicketPaymentPacket decode(FriendlyByteBuf buf) {
+    public static OpenTicketPaymentPacket decode(FriendlyByteBuf ignoredBuf) {
         return new OpenTicketPaymentPacket();
     }
 
-    public static void handle(OpenTicketPaymentPacket packet, Supplier<NetworkManager.PacketContext> context) {
+    public static void handle(OpenTicketPaymentPacket ignoredPacket, Supplier<NetworkManager.PacketContext> context) {
         System.out.println("HANDLE OPEN TICKET PAYMENT");
 
         context.get().queue(() -> {

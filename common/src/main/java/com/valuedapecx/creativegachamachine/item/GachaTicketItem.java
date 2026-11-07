@@ -26,10 +26,10 @@ public class GachaTicketItem extends Item {
         tooltip.add(Component.literal("Ticket Information").withStyle(ChatFormatting.GOLD));
 
         if (tag != null) {
-            tooltip.add(Component.translatable("tooltip.gacha_creative_machine.name",
+            tooltip.add(Component.translatable("tooltip.gacha_ticket.name",
                     tag.getString("TicketName")));
 
-            tooltip.add(Component.translatable("tooltip.gacha_creative_machine.type",
+            tooltip.add(Component.translatable("tooltip.gacha_ticket.type",
                     tag.getInt("TicketType")));
         }
     }

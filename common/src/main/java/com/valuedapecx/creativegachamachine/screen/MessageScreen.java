@@ -56,7 +56,9 @@ public class MessageScreen extends Screen {
             float partialTick
     ) {
 
-        renderBackground(graphics);
+        renderBackground(
+                graphics
+        );
 
         super.render(
                 graphics,

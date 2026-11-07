@@ -23,11 +23,9 @@ public class GachaTicketPaymentScreen extends AbstractContainerScreen<GachaTicke
     private EditBox ticketNameBox;
     private EditBox ticketTypeBox;
 
-    private Button normalPaymentButton;
-
     public GachaTicketPaymentScreen(GachaTicketPaymentMenu menu,
-            Inventory inventory,
-            Component title
+                                    Inventory inventory,
+                                    Component title
     ) {
 
         super(
@@ -91,33 +89,34 @@ public class GachaTicketPaymentScreen extends AbstractContainerScreen<GachaTicke
                 ticketTypeBox
         );
 
-        normalPaymentButton =
-                Button.builder(
+        // サーバーへパケット送信
+        // createPaymentMenu() を開く
+        Button normalPaymentButton = Button.builder(
 
-                                Component.translatable(
-                                        "gui.creative_gacha_machine.normal_payment"
-                                ),
+                        Component.translatable(
+                                "gui.creative_gacha_machine.normal_payment"
+                        ),
 
-                                button -> {
+                        button -> {
 
-                                    // サーバーへパケット送信
-                                    // createPaymentMenu() を開く
-                                    ModPackets.CHANNEL.sendToServer(
-                                            new OpenNormalPaymentPacket()
-                                    );
+                            // サーバーへパケット送信
+                            // createPaymentMenu() を開く
+                            ModPackets.CHANNEL.sendToServer(
+                                    new OpenNormalPaymentPacket()
+                            );
 
-                                }
+                        }
 
-                        )
+                )
 
-                        .bounds(
-                                leftPos + 92,
-                                topPos + 120,
-                                75,
-                                20
-                        )
+                .bounds(
+                        leftPos + 92,
+                        topPos + 120,
+                        75,
+                        20
+                )
 
-                        .build();
+                .build();
 
         addRenderableWidget(
                 normalPaymentButton
