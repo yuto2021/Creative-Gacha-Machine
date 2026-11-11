@@ -8,45 +8,69 @@ body:
   - type: markdown
     attributes:
       value: |
-        ## Before Submitting
+        > [!WARNING]
+        > This form is only for port requests.
+        >
+        > • Bugs → Use **Bug Report**
+        > • Crashes → Use **Crash Report**
+        > • New features → Use **Feature Request**
+        > • Translation issues → Use **Translation Request**
+        >
+        > Port requests are evaluated based on maintenance cost, demand, and technical feasibility.
+        >
+        > Submitting a request does not guarantee a port.
 
-        ### Legend
+        ## Legend
 
         * Required
         ⚡ Recommended
         🔧 Advanced
 
-        Recommended fields are not required, but providing them may help us evaluate the port request faster.
+        Recommended fields are optional, but they may help us evaluate the request faster.
 
         Advanced fields are intended for experienced users and developers.
         If you do not understand what an advanced field means, **leave it empty**.
 
-        ### Checklist
-
-        - Check existing issues before creating a new one.
-        - Verify that the requested version is not already planned.
-        - Explain why this port would be useful.
-
   - type: input
-    id: current_version
+    id: current_minecraft_version
     attributes:
-      label: Current Supported Version
+      label: Current Minecraft Version
+      description: |
+        Enter the Minecraft version currently supported by the mod.
       placeholder: 1.21.1
     validations:
       required: true
 
   - type: input
-    id: requested_version
+    id: requested_minecraft_version
     attributes:
-      label: Requested Version
+      label: Requested Minecraft Version
+      description: |
+        Enter the Minecraft version you would like to see supported.
       placeholder: 1.21.4
     validations:
       required: true
 
   - type: dropdown
-    id: loader
+    id: current_mod_loader
     attributes:
-      label: Mod Loader
+      label: Current Mod Loader
+      description: |
+        Select the mod loader currently supported by the mod.
+      options:
+        - Fabric
+        - Forge
+        - NeoForge
+        - Quilt
+    validations:
+      required: true
+
+  - type: dropdown
+    id: requested_mod_loader
+    attributes:
+      label: Requested Mod Loader
+      description: |
+        Select the mod loader you would like this mod to support.
       options:
         - Fabric
         - Forge
@@ -62,7 +86,35 @@ body:
       description: |
         **⚡ RECOMMENDED**
 
-        Explain why support for this version or loader is needed.
+        Explain why support for this version or mod loader is needed.
+
+        The more information provided, the easier it is to evaluate the request.
+      placeholder: |
+        This port would be useful because...
+
+  - type: textarea
+    id: use_case
+    attributes:
+      label: Use Case ⚡
+      description: |
+        **⚡ RECOMMENDED**
+
+        Describe who would benefit from this port and how it would be used.
+
+      placeholder: |
+        Example:
+        • Players on version ...
+        • Modpacks targeting ...
+        • Server owners using ...
+
+  - type: textarea
+    id: compatibility_notes
+    attributes:
+      label: Compatibility Notes ⚡
+      description: |
+        **⚡ RECOMMENDED**
+
+        Include information about related mods, modpacks, APIs, or dependencies that are relevant to this request.
 
   - type: textarea
     id: technical_notes
@@ -71,12 +123,48 @@ body:
       description: |
         **🔧 ADVANCED**
 
-        Include dependency, compatibility, API migration, or implementation information.
+        Include technical details that may help evaluate the port.
+
+        Examples:
+        • API changes
+        • Loader differences
+        • Removed features
+        • Migration requirements
 
         **If you do not understand what this field means, leave it empty.**
+
+  - type: textarea
+    id: implementation_notes
+    attributes:
+      label: Implementation Notes 🔧
+      description: |
+        **🔧 ADVANCED**
+
+        Describe any known implementation details, dependencies, or development challenges.
+
+        **If you are not familiar with mod development, leave this field empty.**
+
+  - type: upload
+    id: references
+    attributes:
+      label: References ⚡
+      description: |
+        **⚡ RECOMMENDED**
+
+        Upload screenshots, documents, changelogs, compatibility reports, or any other files that support this request.
+
+    validations:
+      required: false
 
   - type: textarea
     id: additional_information
     attributes:
       label: Additional Information
-      description: Any other information you would like to provide.
+      description: |
+        Provide any additional information that may help evaluate the request.
+
+        Examples:
+        • Community demand
+        • Related projects
+        • Development status
+        • Other relevant context

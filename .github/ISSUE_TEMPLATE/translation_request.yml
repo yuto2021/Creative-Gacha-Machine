@@ -1,5 +1,5 @@
 name: Translation Request
-description: Report missing or incorrect translations.
+description: Report missing, incorrect, or improved translations.
 title: "[Translation]: "
 labels:
   - translation
@@ -8,38 +8,74 @@ body:
   - type: markdown
     attributes:
       value: |
-        ## Before Submitting
+        > [!WARNING]
+        > This form is only for translation issues and translation suggestions.
+        >
+        > • Bugs → Use **Bug Report**
+        > • Crashes → Use **Crash Report**
+        > • New features → Use **Feature Request**
+        > • Version support requests → Use **Port Request**
+        >
+        > Please provide accurate translations whenever possible.
+        >
+        > Screenshots are highly recommended.
 
-        ### Legend
+        ## Legend
 
         * Required
         ⚡ Recommended
         🔧 Advanced
 
-        Recommended fields are not required, but providing them may help us identify the issue faster.
+        Recommended fields are optional, but they may help us identify and resolve translation issues faster.
 
-        Advanced fields are intended for experienced users and translators.
+        Advanced fields are intended for experienced translators and developers.
         If you do not understand what an advanced field means, **leave it empty**.
-
-        ### Checklist
-
-        - Check existing issues before creating a new one.
-        - Verify that the translation issue still exists in the latest version.
-        - Provide accurate translations whenever possible.
 
   - type: input
     id: language
     attributes:
       label: Language
+      description: |
+        Enter the language affected by this translation issue.
+
+        Examples:
+        • Japanese (ja_jp)
+        • French (fr_fr)
+        • German (de_de)
       placeholder: Japanese (ja_jp)
     validations:
       required: true
+
+  - type: input
+    id: mod_version
+    attributes:
+      label: Mod Version ⚡
+      description: |
+        **⚡ RECOMMENDED**
+
+        Enter the version of the mod where the translation issue occurs.
+      placeholder: 1.0.0
+
+  - type: input
+    id: minecraft_version
+    attributes:
+      label: Minecraft Version ⚡
+      description: |
+        **⚡ RECOMMENDED**
+
+        Enter the Minecraft version where the translation issue occurs.
+      placeholder: 1.21.1
 
   - type: textarea
     id: current_translation
     attributes:
       label: Current Translation
-      description: The text currently displayed in-game.
+      description: |
+        Enter the text currently displayed in-game.
+
+        Copy the text exactly as it appears.
+      placeholder: |
+        Current text shown in-game...
     validations:
       required: true
 
@@ -47,18 +83,48 @@ body:
     id: suggested_translation
     attributes:
       label: Suggested Translation
-      description: The translation you believe should be used.
+      description: |
+        Enter the translation that should be used instead.
+
+        Be as accurate and natural as possible.
+      placeholder: |
+        Suggested translation...
     validations:
       required: true
 
-  - type: textarea
+  - type: upload
     id: screenshot
     attributes:
       label: Screenshot ⚡
       description: |
         **⚡ RECOMMENDED**
 
-        A screenshot showing the translation issue helps identify the affected text.
+        Upload a screenshot showing the issue.
+
+        Screenshots help identify:
+        • The affected screen
+        • The affected text
+        • Context of the translation
+
+    validations:
+      required: false
+
+  - type: textarea
+    id: issue_type
+    attributes:
+      label: Translation Issue Type ⚡
+      description: |
+        **⚡ RECOMMENDED**
+
+        Describe the type of translation issue.
+
+        Examples:
+        • Missing translation
+        • Incorrect translation
+        • Typo
+        • Inconsistent terminology
+        • Untranslated text
+      placeholder: Missing translation
 
   - type: textarea
     id: translation_context
@@ -67,12 +133,42 @@ body:
       description: |
         **🔧 ADVANCED**
 
-        Include translation keys, resource locations, language file paths, or technical context.
+        Provide technical information that may help identify the translation.
+
+        Examples:
+        • Translation key
+        • Language file path
+        • Resource location
+        • GUI element name
 
         **If you do not know what these terms mean, leave this field empty.**
 
+      placeholder: |
+        item.example_mod.example_item
+        gui.example_mod.menu.title
+
   - type: textarea
-    id: notes
+    id: terminology_notes
+    attributes:
+      label: Terminology Notes 🔧
+      description: |
+        **🔧 ADVANCED**
+
+        Explain terminology choices or translation conventions.
+
+        This is primarily intended for translators and localization contributors.
+
+        **If you are unsure, leave this field empty.**
+
+  - type: textarea
+    id: additional_notes
     attributes:
       label: Additional Notes
-      description: Any other information you would like to provide.
+      description: |
+        Provide any additional information that may help resolve the translation issue.
+
+        Examples:
+        • Reference translations
+        • Style considerations
+        • Cultural context
+        • Related translation issues
