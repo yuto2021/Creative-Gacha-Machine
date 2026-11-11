@@ -157,3 +157,4 @@ body:
     id: additional_information
     attributes:
       label: Additional Information
+      description: Any other information you would like to provide.
