@@ -10,15 +10,30 @@ body:
       value: |
         ## Before Submitting
 
+        ### Legend
+
+        * Required
+        ⚡ Recommended
+        🔧 Advanced
+
+        Recommended fields are not required, but providing them may help us investigate and resolve issues faster.
+
+        Advanced fields are intended for experienced users and developers.
+        If you do not understand what an advanced field means, **leave it empty**.
+
+        ### Checklist
+
+        - Make sure you are using the latest version of the mod.
         - Attach the crash report whenever possible.
         - Include latest.log if available.
-        - Check existing issues first.
+        - Check existing issues before creating a new one.
 
   - type: textarea
     id: description
     attributes:
       label: Description
-      placeholder: What were you doing before the crash?
+      description: Describe what you were doing before the crash occurred.
+      placeholder: What happened before the crash?
     validations:
       required: true
 
@@ -26,6 +41,7 @@ body:
     id: mod_version
     attributes:
       label: Mod Version
+      placeholder: 1.0.0
     validations:
       required: true
 
@@ -33,6 +49,7 @@ body:
     id: minecraft_version
     attributes:
       label: Minecraft Version
+      placeholder: 1.21.1
     validations:
       required: true
 
@@ -52,6 +69,7 @@ body:
     id: loader_version
     attributes:
       label: Loader Version
+      placeholder: 0.xx.x
     validations:
       required: true
 
@@ -60,32 +78,80 @@ body:
     attributes:
       label: Crash Report
       description: Paste the crash report or upload it.
+      placeholder: |
+        Paste crash report here...
     validations:
       required: true
 
   - type: textarea
     id: latest_log
     attributes:
-      label: Latest Log
-      description: Recommended
+      label: Latest Log ⚡
+      description: |
+        **⚡ RECOMMENDED**
+
+        The latest.log file may contain additional information that is not included in the crash report.
 
   - type: textarea
-    id: reproduction
+    id: reproduction_steps
     attributes:
-      label: Steps to Reproduce
-      description: Recommended
+      label: Steps to Reproduce ⚡
+      description: |
+        **⚡ RECOMMENDED**
+
+        Describe exactly how the crash can be reproduced.
+      placeholder: |
+        1. ...
+        2. ...
+        3. ...
 
   - type: textarea
     id: other_mods
     attributes:
-      label: Other Installed Mods
-      description: Recommended
+      label: Other Installed Mods ⚡
+      description: |
+        **⚡ RECOMMENDED**
+
+        Mod conflicts are a common cause of crashes. Please list any relevant installed mods.
 
   - type: textarea
     id: screenshots
     attributes:
-      label: Screenshots
-      description: Recommended
+      label: Screenshots ⚡
+      description: |
+        **⚡ RECOMMENDED**
+
+        Screenshots may help explain what happened before the crash.
+
+  - type: dropdown
+    id: environment
+    attributes:
+      label: Environment
+      options:
+        - Singleplayer
+        - Multiplayer
+        - Dedicated Server
+
+  - type: dropdown
+    id: operating_system
+    attributes:
+      label: Operating System
+      options:
+        - Windows
+        - Linux
+        - macOS
+        - Other
+
+  - type: textarea
+    id: jvm_arguments
+    attributes:
+      label: JVM Arguments 🔧
+      description: |
+        **🔧 ADVANCED**
+
+        Used for advanced troubleshooting and debugging.
+
+        **If you do not know what JVM arguments are, leave this field empty.**
 
   - type: textarea
     id: additional_information

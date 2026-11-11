@@ -1,10 +1,32 @@
 name: Translation Request
 description: Report missing or incorrect translations.
-title: ""
+title: "[Translation]: "
 labels:
   - translation
 
 body:
+  - type: markdown
+    attributes:
+      value: |
+        ## Before Submitting
+
+        ### Legend
+
+        * Required
+        ⚡ Recommended
+        🔧 Advanced
+
+        Recommended fields are not required, but providing them may help us identify the issue faster.
+
+        Advanced fields are intended for experienced users and translators.
+        If you do not understand what an advanced field means, **leave it empty**.
+
+        ### Checklist
+
+        - Check existing issues before creating a new one.
+        - Verify that the translation issue still exists in the latest version.
+        - Provide accurate translations whenever possible.
+
   - type: input
     id: language
     attributes:
@@ -17,6 +39,7 @@ body:
     id: current_translation
     attributes:
       label: Current Translation
+      description: The text currently displayed in-game.
     validations:
       required: true
 
@@ -24,16 +47,32 @@ body:
     id: suggested_translation
     attributes:
       label: Suggested Translation
+      description: The translation you believe should be used.
     validations:
       required: true
 
   - type: textarea
     id: screenshot
     attributes:
-      label: Screenshot
-      description: Recommended
+      label: Screenshot ⚡
+      description: |
+        **⚡ RECOMMENDED**
+
+        A screenshot showing the translation issue helps identify the affected text.
+
+  - type: textarea
+    id: translation_context
+    attributes:
+      label: Translation Context 🔧
+      description: |
+        **🔧 ADVANCED**
+
+        Include translation keys, resource locations, language file paths, or technical context.
+
+        **If you do not know what these terms mean, leave this field empty.**
 
   - type: textarea
     id: notes
     attributes:
       label: Additional Notes
+      description: Any other information you would like to provide.

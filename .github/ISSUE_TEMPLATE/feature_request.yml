@@ -1,6 +1,6 @@
 name: Feature Request
 description: Suggest a new feature.
-title: ""
+title: "[Feature]: "
 labels:
   - enhancement
 
@@ -8,13 +8,32 @@ body:
   - type: markdown
     attributes:
       value: |
-        Feature requests are welcome, but implementation is not guaranteed.
+        ## Before Submitting
+
+        ### Legend
+
+        * Required
+        ⚡ Recommended
+        🔧 Advanced
+
+        Recommended fields are not required, but providing them may help us understand and evaluate your suggestion faster.
+
+        Advanced fields are intended for experienced users and developers.
+        If you do not understand what an advanced field means, **leave it empty**.
+
+        ### Checklist
+
+        - Check existing issues before creating a new one.
+        - Make sure the feature has not already been suggested.
+        - Clearly explain the problem your idea solves.
+        - Feature requests are welcome, but implementation is not guaranteed.
 
   - type: textarea
     id: feature_description
     attributes:
       label: Feature Description
-      placeholder: Describe your idea.
+      description: Describe your idea in detail.
+      placeholder: Describe the feature you would like to see.
     validations:
       required: true
 
@@ -22,27 +41,78 @@ body:
     id: usefulness
     attributes:
       label: Why is this useful?
+      description: Explain why this feature should be added.
+      placeholder: What problem does this solve?
     validations:
       required: true
 
   - type: textarea
     id: use_case
     attributes:
-      label: Example Use Case
-      description: Recommended
+      label: Example Use Case ⚡
+      description: |
+        **⚡ RECOMMENDED**
+
+        Explain how this feature would be used in normal gameplay.
+      placeholder: |
+        Example:
+        1. Player does ...
+        2. Feature activates ...
+        3. Result ...
 
   - type: textarea
     id: screenshots
     attributes:
-      label: Screenshots / Mockups
-      description: Recommended
+      label: Screenshots / Mockups ⚡
+      description: |
+        **⚡ RECOMMENDED**
+
+        Concepts, mockups, drawings, screenshots, or examples from other mods can help explain your idea.
+
+  - type: dropdown
+    id: feature_type
+    attributes:
+      label: Feature Type ⚡
+      description: |
+        **⚡ RECOMMENDED**
+
+        Select the category that best fits your suggestion.
+      options:
+        - Gameplay
+        - Blocks
+        - Items
+        - GUI / UI
+        - Visuals
+        - Configuration
+        - Compatibility
+        - Performance
+        - API
+        - Other
 
   - type: textarea
     id: implementation
     attributes:
-      label: Possible Implementation
+      label: Possible Implementation 🔧
+      description: |
+        **🔧 ADVANCED**
+
+        Describe a possible technical implementation.
+
+        **If you are not familiar with software development, leave this field empty.**
+
+  - type: textarea
+    id: compatibility_notes
+    attributes:
+      label: Compatibility Considerations 🔧
+      description: |
+        **🔧 ADVANCED**
+
+        Include information about mod compatibility, APIs, dependencies, or technical limitations.
+
+        **If you do not understand what this field means, leave it empty.**
 
   - type: textarea
     id: additional_information
     attributes:
       label: Additional Information
+      description: Any other information you would like to provide.
