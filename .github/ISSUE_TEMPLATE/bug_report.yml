@@ -8,32 +8,37 @@ body:
   - type: markdown
     attributes:
       value: |
-        ## Before Submitting
+        > [!WARNING]
+        > This form is only for bug reports.
+        >
+        > • Game crashes → Use **Crash Report**
+        > • New features → Use **Feature Request**
+        > • Version support requests → Use **Port Request**
+        > • Translation issues → Use **Translation Request**
+        >
+        > Issues submitted using the wrong template may be closed.
 
-        ### Legend
+        ## Legend
 
         * Required
         ⚡ Recommended
         🔧 Advanced
 
-        Recommended fields are not required, but providing them may help us investigate and resolve issues faster.
+        Recommended fields are optional, but providing them may help us investigate and resolve issues faster.
 
         Advanced fields are intended for experienced users and developers.
         If you do not understand what an advanced field means, **leave it empty**.
-
-        ### Checklist
-
-        - Make sure you are using the latest version of the mod.
-        - Check existing issues before creating a new one.
-        - If the issue crashes the game, please use **Crash Report** instead.
-        - Reports with insufficient information may be closed.
 
   - type: textarea
     id: description
     attributes:
       label: Description
-      description: Describe the issue in detail.
-      placeholder: What happened?
+      description: |
+        Describe the issue in as much detail as possible.
+
+        Explain what happened, where it happened, and any relevant circumstances.
+      placeholder: |
+        The issue occurs when...
     validations:
       required: true
 
@@ -41,6 +46,8 @@ body:
     id: mod_version
     attributes:
       label: Mod Version
+      description: |
+        Enter the version of this mod where the issue occurred.
       placeholder: 1.0.0
     validations:
       required: true
@@ -49,14 +56,18 @@ body:
     id: minecraft_version
     attributes:
       label: Minecraft Version
+      description: |
+        Enter the Minecraft version where the issue occurred.
       placeholder: 1.21.1
     validations:
       required: true
 
   - type: dropdown
-    id: loader
+    id: mod_loader
     attributes:
       label: Mod Loader
+      description: |
+        Select the mod loader used when the issue occurred.
       options:
         - Fabric
         - Forge
@@ -66,9 +77,11 @@ body:
       required: true
 
   - type: input
-    id: loader_version
+    id: mod_loader_version
     attributes:
-      label: Loader Version
+      label: Mod Loader Version
+      description: |
+        Enter the version of the selected mod loader.
       placeholder: 0.xx.x
     validations:
       required: true
@@ -77,10 +90,14 @@ body:
     id: reproduction_steps
     attributes:
       label: Steps to Reproduce
+      description: |
+        List the exact steps required to reproduce the issue.
+
+        The easier it is to reproduce, the easier it is to investigate.
       placeholder: |
-        1. ...
-        2. ...
-        3. ...
+        1. Open world
+        2. Do something
+        3. The issue occurs
     validations:
       required: true
 
@@ -91,7 +108,9 @@ body:
       description: |
         **⚡ RECOMMENDED**
 
-        Describe what you expected to happen instead.
+        Describe what should have happened instead.
+
+        This helps distinguish intended behavior from bugs.
 
   - type: upload
     id: screenshots
@@ -100,16 +119,35 @@ body:
       description: |
         **⚡ RECOMMENDED**
 
-        Screenshots can help us understand visual issues, rendering problems, GUI glitches, and unexpected behavior.
+        Upload screenshots showing the issue.
 
-  - type: textarea
+        Screenshots are especially useful for:
+        • GUI issues
+        • Visual bugs
+        • Rendering problems
+        • Missing textures
+        • Incorrect translations
+
+    validations:
+      required: false
+
+  - type: upload
     id: latest_log
     attributes:
       label: Latest Log ⚡
       description: |
         **⚡ RECOMMENDED**
 
-        The latest.log file may contain warnings or errors that help identify the cause of the issue.
+        Upload the latest.log file.
+
+        The log may contain warnings and errors that help identify the cause of the issue.
+
+        The log is usually located in:
+
+        .minecraft/logs/latest.log
+
+    validations:
+      required: false
 
   - type: textarea
     id: other_mods
@@ -118,12 +156,21 @@ body:
       description: |
         **⚡ RECOMMENDED**
 
-        Mod conflicts are a common cause of issues. Please list any relevant installed mods.
+        List any mods that may interact with this mod.
+
+        Mod conflicts are a common source of issues.
+
+      placeholder: |
+        Fabric API
+        JEI
+        EMI
 
   - type: dropdown
     id: environment
     attributes:
       label: Environment
+      description: |
+        Select where the issue occurred.
       options:
         - Singleplayer
         - Multiplayer
@@ -133,6 +180,8 @@ body:
     id: operating_system
     attributes:
       label: Operating System
+      description: |
+        Select the operating system used when the issue occurred.
       options:
         - Windows
         - Linux
@@ -146,7 +195,14 @@ body:
       description: |
         **🔧 ADVANCED**
 
-        Used for advanced troubleshooting and debugging.
+        Provide custom JVM arguments if you are using any.
+
+        Examples:
+        • -Xmx8G
+        • -Xms4G
+        • Custom Java flags
+
+        This information is only useful for advanced troubleshooting.
 
         **If you do not know what JVM arguments are, leave this field empty.**
 
@@ -154,3 +210,11 @@ body:
     id: additional_information
     attributes:
       label: Additional Information
+      description: |
+        Provide any additional information that may help investigate the issue.
+
+        Examples:
+        • Video recordings
+        • Temporary workarounds
+        • Related issues
+        • Unusual behavior not covered above
