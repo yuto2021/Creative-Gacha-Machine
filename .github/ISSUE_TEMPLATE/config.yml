@@ -1,0 +1,6 @@
+blank_issues_enabled: false
+
+contact_links:
+  - name: FAQ
+    url: https://github.com/OWNER/REPOSITORY/wiki/FAQ
+    about: Read the FAQ before opening an issue.

@@ -1,0 +1,39 @@
+name: Translation Request
+description: Report missing or incorrect translations.
+title: ""
+labels:
+  - translation
+
+body:
+  - type: input
+    id: language
+    attributes:
+      label: Language
+      placeholder: Japanese (ja_jp)
+    validations:
+      required: true
+
+  - type: textarea
+    id: current_translation
+    attributes:
+      label: Current Translation
+    validations:
+      required: true
+
+  - type: textarea
+    id: suggested_translation
+    attributes:
+      label: Suggested Translation
+    validations:
+      required: true
+
+  - type: textarea
+    id: screenshot
+    attributes:
+      label: Screenshot
+      description: Recommended
+
+  - type: textarea
+    id: notes
+    attributes:
+      label: Additional Notes

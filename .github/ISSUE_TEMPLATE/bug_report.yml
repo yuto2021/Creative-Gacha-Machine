@@ -1,0 +1,120 @@
+name: Bug Report
+description: Report an issue that does not crash the game.
+title: "[Bug]: "
+labels:
+  - bug
+
+body:
+  - type: markdown
+    attributes:
+      value: |
+        ## Before Submitting
+
+        - Make sure you are using the latest version of the mod.
+        - Check existing issues before creating a new one.
+        - If the issue crashes the game, please use **Crash Report** instead.
+        - Reports with insufficient information may be closed.
+
+  - type: textarea
+    id: description
+    attributes:
+      label: Description
+      description: Describe the issue in detail.
+      placeholder: What happened?
+    validations:
+      required: true
+
+  - type: input
+    id: mod_version
+    attributes:
+      label: Mod Version
+      placeholder: 1.0.0
+    validations:
+      required: true
+
+  - type: input
+    id: minecraft_version
+    attributes:
+      label: Minecraft Version
+      placeholder: 1.21.1
+    validations:
+      required: true
+
+  - type: dropdown
+    id: loader
+    attributes:
+      label: Mod Loader
+      options:
+        - Fabric
+        - Forge
+        - NeoForge
+        - Quilt
+    validations:
+      required: true
+
+  - type: input
+    id: loader_version
+    attributes:
+      label: Loader Version
+      placeholder: 0.xx.x
+    validations:
+      required: true
+
+  - type: textarea
+    id: reproduction_steps
+    attributes:
+      label: Steps to Reproduce
+      placeholder: |
+        1. ...
+        2. ...
+        3. ...
+    validations:
+      required: true
+
+  - type: textarea
+    id: expected_behavior
+    attributes:
+      label: Expected Behavior
+      description: Recommended
+
+  - type: textarea
+    id: screenshots
+    attributes:
+      label: Screenshots
+      description: Recommended
+
+  - type: textarea
+    id: latest_log
+    attributes:
+      label: Latest Log
+      description: Recommended
+
+  - type: textarea
+    id: other_mods
+    attributes:
+      label: Other Installed Mods
+      description: Recommended
+
+  - type: dropdown
+    id: environment
+    attributes:
+      label: Environment
+      options:
+        - Singleplayer
+        - Multiplayer
+        - Dedicated Server
+
+  - type: dropdown
+    id: operating_system
+    attributes:
+      label: Operating System
+      options:
+        - Windows
+        - Linux
+        - macOS
+        - Other
+
+  - type: textarea
+    id: additional_information
+    attributes:
+      label: Additional Information

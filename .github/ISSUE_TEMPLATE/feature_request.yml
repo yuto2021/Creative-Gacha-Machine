@@ -1,0 +1,48 @@
+name: Feature Request
+description: Suggest a new feature.
+title: ""
+labels:
+  - enhancement
+
+body:
+  - type: markdown
+    attributes:
+      value: |
+        Feature requests are welcome, but implementation is not guaranteed.
+
+  - type: textarea
+    id: feature_description
+    attributes:
+      label: Feature Description
+      placeholder: Describe your idea.
+    validations:
+      required: true
+
+  - type: textarea
+    id: usefulness
+    attributes:
+      label: Why is this useful?
+    validations:
+      required: true
+
+  - type: textarea
+    id: use_case
+    attributes:
+      label: Example Use Case
+      description: Recommended
+
+  - type: textarea
+    id: screenshots
+    attributes:
+      label: Screenshots / Mockups
+      description: Recommended
+
+  - type: textarea
+    id: implementation
+    attributes:
+      label: Possible Implementation
+
+  - type: textarea
+    id: additional_information
+    attributes:
+      label: Additional Information

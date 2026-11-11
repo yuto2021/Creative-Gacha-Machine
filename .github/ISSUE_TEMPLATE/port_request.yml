@@ -1,0 +1,43 @@
+name: Port Request
+description: Request support for another Minecraft version or mod loader.
+title: ""
+labels:
+  - port-request
+
+body:
+  - type: input
+    id: current_version
+    attributes:
+      label: Current Supported Version
+    validations:
+      required: true
+
+  - type: input
+    id: requested_version
+    attributes:
+      label: Requested Version
+    validations:
+      required: true
+
+  - type: dropdown
+    id: loader
+    attributes:
+      label: Mod Loader
+      options:
+        - Fabric
+        - Forge
+        - NeoForge
+        - Quilt
+    validations:
+      required: true
+
+  - type: textarea
+    id: reason
+    attributes:
+      label: Reason
+      description: Recommended
+
+  - type: textarea
+    id: additional_information
+    attributes:
+      label: Additional Information

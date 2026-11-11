@@ -1,0 +1,93 @@
+name: Crash Report
+description: Report a game crash.
+title: "[Crash]: "
+labels:
+  - crash
+
+body:
+  - type: markdown
+    attributes:
+      value: |
+        ## Before Submitting
+
+        - Attach the crash report whenever possible.
+        - Include latest.log if available.
+        - Check existing issues first.
+
+  - type: textarea
+    id: description
+    attributes:
+      label: Description
+      placeholder: What were you doing before the crash?
+    validations:
+      required: true
+
+  - type: input
+    id: mod_version
+    attributes:
+      label: Mod Version
+    validations:
+      required: true
+
+  - type: input
+    id: minecraft_version
+    attributes:
+      label: Minecraft Version
+    validations:
+      required: true
+
+  - type: dropdown
+    id: loader
+    attributes:
+      label: Mod Loader
+      options:
+        - Fabric
+        - Forge
+        - NeoForge
+        - Quilt
+    validations:
+      required: true
+
+  - type: input
+    id: loader_version
+    attributes:
+      label: Loader Version
+    validations:
+      required: true
+
+  - type: textarea
+    id: crash_report
+    attributes:
+      label: Crash Report
+      description: Paste the crash report or upload it.
+    validations:
+      required: true
+
+  - type: textarea
+    id: latest_log
+    attributes:
+      label: Latest Log
+      description: Recommended
+
+  - type: textarea
+    id: reproduction
+    attributes:
+      label: Steps to Reproduce
+      description: Recommended
+
+  - type: textarea
+    id: other_mods
+    attributes:
+      label: Other Installed Mods
+      description: Recommended
+
+  - type: textarea
+    id: screenshots
+    attributes:
+      label: Screenshots
+      description: Recommended
+
+  - type: textarea
+    id: additional_information
+    attributes:
+      label: Additional Information
