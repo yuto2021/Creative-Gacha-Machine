@@ -1,6 +1,9 @@
 blank_issues_enabled: false
 
 contact_links:
-  - name: FAQ
-    url: https://github.com/OWNER/REPOSITORY/wiki/FAQ
-    about: Read the FAQ before opening an issue.
+  - name: FAQ (Coming Soon)
+    url: https://github.com
+    about: |
+      The FAQ page is currently under development.
+
+      This section is not yet available and will be added in a future update.
