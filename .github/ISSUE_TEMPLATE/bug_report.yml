@@ -10,6 +10,10 @@ body:
       value: |
         ## Before Submitting
 
+        * Required
+        ⚡ Recommended
+        🔧 Advanced
+
         - Make sure you are using the latest version of the mod.
         - Check existing issues before creating a new one.
         - If the issue crashes the game, please use **Crash Report** instead.
@@ -17,31 +21,29 @@ body:
 
   - type: textarea
     id: description
+    priority: required
     attributes:
       label: Description
       description: Describe the issue in detail.
       placeholder: What happened?
-    validations:
-      required: true
 
   - type: input
     id: mod_version
+    priority: required
     attributes:
       label: Mod Version
       placeholder: 1.0.0
-    validations:
-      required: true
 
   - type: input
     id: minecraft_version
+    priority: required
     attributes:
       label: Minecraft Version
       placeholder: 1.21.1
-    validations:
-      required: true
 
   - type: dropdown
     id: loader
+    priority: required
     attributes:
       label: Mod Loader
       options:
@@ -49,54 +51,51 @@ body:
         - Forge
         - NeoForge
         - Quilt
-    validations:
-      required: true
 
   - type: input
     id: loader_version
+    priority: required
     attributes:
       label: Loader Version
       placeholder: 0.xx.x
-    validations:
-      required: true
 
   - type: textarea
     id: reproduction_steps
+    priority: required
     attributes:
       label: Steps to Reproduce
       placeholder: |
         1. ...
         2. ...
         3. ...
-    validations:
-      required: true
 
   - type: textarea
     id: expected_behavior
+    priority: recommended
     attributes:
       label: Expected Behavior
-      description: Recommended
 
   - type: textarea
     id: screenshots
+    priority: recommended
     attributes:
       label: Screenshots
-      description: Recommended
 
   - type: textarea
     id: latest_log
+    priority: recommended
     attributes:
       label: Latest Log
-      description: Recommended
 
   - type: textarea
     id: other_mods
+    priority: recommended
     attributes:
       label: Other Installed Mods
-      description: Recommended
 
   - type: dropdown
     id: environment
+    priority: optional
     attributes:
       label: Environment
       options:
@@ -106,6 +105,7 @@ body:
 
   - type: dropdown
     id: operating_system
+    priority: optional
     attributes:
       label: Operating System
       options:
@@ -115,6 +115,14 @@ body:
         - Other
 
   - type: textarea
+    id: jvm_arguments
+    priority: advanced
+    attributes:
+      label: JVM Arguments
+      description: Only fill this field if you know what it means.
+
+  - type: textarea
     id: additional_information
+    priority: optional
     attributes:
       label: Additional Information
