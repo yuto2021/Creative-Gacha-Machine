@@ -93,7 +93,7 @@ body:
 
         Describe what you expected to happen instead.
 
-  - type: textarea
+  - type: upload
     id: screenshots
     attributes:
       label: Screenshots ⚡
