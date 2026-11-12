@@ -54,17 +54,17 @@ body:
       description: |
         Describe exactly what happened.
 
-        - Include:
+        Include:
         - What happened
         - When it happened
         - Why it appears incorrect
 
-        - Reports such as:
+        Reports such as:
         - "Doesn't work"
         - "Broken"
         - "Fix this"
 
-        - usually do not provide enough information to investigate.
+        usually do not provide enough information to investigate.
       placeholder: |
         What happened:
         The recipe book becomes empty after joining a world.
@@ -132,7 +132,8 @@ body:
       label: Affected Area ⚡
       description: |
         **⚡ RECOMMENDED**
-        - Select the category that best matches the issue.
+        
+        Select the category that best matches the issue.
       options:
         - Gameplay
         - GUI
@@ -150,7 +151,8 @@ body:
       label: Reproducibility ⚡
       description: |
         **⚡ RECOMMENDED**
-        - How often does this issue occur?
+        
+        How often does this issue occur?
       options:
         - Always
         - Often
@@ -241,10 +243,10 @@ body:
       label: Screenshots ⚡
       description: |
         **⚡ RECOMMENDED**
-        - Upload screenshots showing the issue.
+        
+        Upload screenshots showing the issue.
 
-        Screenshots are especially useful for:
-        - GUI issues
+        Screenshots are especially useful for: - GUI issues
         - Visual bugs
         - Rendering problems
         - Missing textures
@@ -258,6 +260,7 @@ body:
       label: Latest Log ⚡
       description: |
         **⚡ RECOMMENDED**
+        
         Upload the latest.log file.
 
         Common location:
@@ -271,6 +274,7 @@ body:
       label: Relevant Log Excerpt ⚡
       description: |
         **⚡ RECOMMENDED**
+        
         Paste the relevant log section if known.
       render: shell
       placeholder: |
@@ -288,6 +292,7 @@ body:
       label: Other Installed Mods ⚡
       description: |
         **⚡ RECOMMENDED**
+        
         List any mods that may interact with this mod.
 
         Mod conflicts are a common source of issues.
@@ -302,6 +307,7 @@ body:
       label: Reproduces With Only This Mod Installed? ⚡
       description: |
         **⚡ RECOMMENDED**
+        
         Testing without other mods can help identify compatibility issues.
       options:
         - "Yes"
@@ -321,12 +327,14 @@ body:
         Provide custom JVM arguments if you are using any.
 
         Examples:
-        • -Xmx8G
-        • -Xms4G
-        • Custom Java flags
+        - -Xmx8G
+        - -Xms4G
+        - Custom Java flags
 
         > [!IMPORTANT]
+        >
         > **🔧 ADVANCED**
+        >
         > If you do not know what JVM arguments are, leave this field empty.
       render: shell
       placeholder: |
@@ -341,10 +349,10 @@ body:
         Provide any additional information that may help investigate the issue.
 
         Examples:
-        • Video recordings
-        • Temporary workarounds
-        • Related issues
-        • Unusual behavior not covered above
+        - Video recordings
+        - Temporary workarounds
+        - Related issues
+        - Unusual behavior not covered above
 
   - type: markdown
     attributes:
