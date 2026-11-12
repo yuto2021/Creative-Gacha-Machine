@@ -3,21 +3,27 @@ description: Suggest a new feature or improvement.
 title: "[Feature]: "
 labels:
   - enhancement
+type: feature
 
 body:
   - type: markdown
     attributes:
       value: |
-        > [!WARNING]
-        > This form is only for feature requests.
-        >
-        > • Bugs → Use **Bug Report**
-        > • Crashes → Use **Crash Report**
-        > • Version support requests → Use **Port Request**
-        > • Translation issues → Use **Translation Request**
-        >
-        > Feature requests are reviewed individually.
-        > Submitting a request does not guarantee implementation.
+        > [!IMPORTANT]
+        > Please provide as much accurate information as possible.
+        > Well-described feature requests are easier to evaluate and prioritize.
+
+        ## Goals
+
+        This issue form is designed to balance:
+
+        - Ease of reporting for users.
+        - Efficient evaluation for developers.
+        - High-quality feature requests.
+        - Consistent issue classification.
+        - Long-term project maintenance and planning.
+
+        The goal is to collect useful information without making feature requests unnecessarily difficult.
 
         ## Legend
 
@@ -25,36 +31,42 @@ body:
         ⚡ Recommended
         🔧 Advanced
 
-        Recommended fields are optional, but they may help us understand and evaluate your suggestion faster.
+        Please only fill in the information you know.
 
-        Advanced fields are intended for experienced users and developers.
-        If you do not understand what an advanced field means, **leave it empty**.
+        ⚡ Recommended fields are optional, but strongly encouraged.
+
+        🔧 Advanced fields are intended for experienced users and developers.
+
+        If you do not understand what an advanced field means, leave it empty.
+
+  - type: markdown
+    attributes:
+      value: |
+        ## Information
 
   - type: textarea
     id: feature_description
     attributes:
       label: Feature Description
       description: |
-        Describe the feature you would like to see added.
-
-        Explain the feature in detail and what it should do.
+        Describe the feature you would like to see.
       placeholder: |
         I would like a feature that...
     validations:
       required: true
+      min_length: 30
 
   - type: textarea
     id: usefulness
     attributes:
-      label: Why is this useful?
+      label: Why Is This Useful?
       description: |
-        Explain why this feature should be added.
-
-        Describe the problem it solves or the benefit it provides.
+        Explain what problem this feature solves.
       placeholder: |
-        This feature would be useful because...
+        This would be useful because...
     validations:
       required: true
+      min_length: 20
 
   - type: textarea
     id: use_case
@@ -63,38 +75,21 @@ body:
       description: |
         **⚡ RECOMMENDED**
 
-        Describe a real-world gameplay situation where this feature would be useful.
-
-        Examples help determine whether a feature is practical.
+        Describe a real-world use case.
       placeholder: |
-        Example:
-
         1. Player does ...
         2. Feature activates ...
         3. Desired result occurs
 
-  - type: upload
-    id: screenshots
+  - type: markdown
     attributes:
-      label: Screenshots / Mockups ⚡
-      description: |
-        **⚡ RECOMMENDED**
-
-        Upload screenshots, concept art, mockups, diagrams, references, or examples from other mods.
-
-        Visual references make it easier to understand your idea.
-
-    validations:
-      required: false
+      value: |
+        ## Classification
 
   - type: dropdown
     id: feature_type
     attributes:
       label: Feature Type ⚡
-      description: |
-        **⚡ RECOMMENDED**
-
-        Select the category that best matches your suggestion.
       options:
         - Gameplay
         - Blocks
@@ -108,6 +103,25 @@ body:
         - API
         - Other
 
+  - type: markdown
+    attributes:
+      value: |
+        ## Evidence
+
+  - type: upload
+    id: screenshots
+    attributes:
+      label: Screenshots / Mockups ⚡
+      description: |
+        **⚡ RECOMMENDED**
+
+        Upload mockups, references, diagrams, or examples.
+
+  - type: markdown
+    attributes:
+      value: |
+        ## Compatibility
+
   - type: textarea
     id: alternatives
     attributes:
@@ -115,73 +129,47 @@ body:
       description: |
         **⚡ RECOMMENDED**
 
-        Describe any existing workarounds or alternative solutions you have considered.
+        Describe existing workarounds or alternatives.
 
-      placeholder: |
-        I currently use...
-        Another possible solution would be...
+  - type: markdown
+    attributes:
+      value: |
+        ## Advanced Diagnostics
 
   - type: textarea
     id: implementation
     attributes:
       label: Possible Implementation 🔧
       description: |
-        **🔧 ADVANCED**
-
-        Describe how this feature could be implemented.
-
-        This section is intended for users with programming or modding experience.
-
-        **If you are not familiar with software development, leave this field empty.**
-
-      placeholder: |
-        Possible implementation:
-        - Add ...
-        - Modify ...
-        - Create ...
+        Explain how this feature could be implemented.
 
   - type: textarea
     id: compatibility_notes
     attributes:
       label: Compatibility Considerations 🔧
-      description: |
-        **🔧 ADVANCED**
-
-        Include information about compatibility with:
-        • Other mods
-        • APIs
-        • Data packs
-        • Resource packs
-        • Mod loaders
-
-        **If you do not understand what this field means, leave it empty.**
 
   - type: textarea
     id: technical_notes
     attributes:
       label: Technical Notes 🔧
-      description: |
-        **🔧 ADVANCED**
-
-        Include any technical information that may help evaluate the request.
-
-        Examples:
-        • Performance impact
-        • Storage requirements
-        • Network synchronization
-        • Rendering considerations
-
-        **If you do not understand what this field means, leave it empty.**
 
   - type: textarea
     id: additional_information
     attributes:
       label: Additional Information
-      description: |
-        Provide any additional information that may help explain the request.
 
-        Examples:
-        • Related mods
-        • Related issues
-        • Additional context
-        • Community demand
+  - type: markdown
+    attributes:
+      value: |
+        ## Verification
+
+  - type: checkboxes
+    id: verification
+    attributes:
+      label: Verification
+      options:
+        - label: I searched existing feature requests before creating this request.
+          required: true
+
+        - label: I clearly explained the intended use case.
+          required: true

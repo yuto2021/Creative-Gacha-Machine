@@ -3,22 +3,24 @@ description: Report missing, incorrect, or improved translations.
 title: "[Translation]: "
 labels:
   - translation
+type: task
 
 body:
   - type: markdown
     attributes:
       value: |
-        > [!WARNING]
-        > This form is only for translation issues and translation suggestions.
-        >
-        > • Bugs → Use **Bug Report**
-        > • Crashes → Use **Crash Report**
-        > • New features → Use **Feature Request**
-        > • Version support requests → Use **Port Request**
-        >
+        > [!IMPORTANT]
         > Please provide accurate translations whenever possible.
-        >
-        > Screenshots are highly recommended.
+
+        ## Goals
+
+        This issue form is designed to balance:
+
+        - Ease of reporting for users.
+        - Efficient review for translators and developers.
+        - High-quality translation reports.
+        - Consistent issue classification.
+        - Long-term localization maintenance.
 
         ## Legend
 
@@ -26,19 +28,16 @@ body:
         ⚡ Recommended
         🔧 Advanced
 
-        Recommended fields are optional, but they may help us identify and resolve translation issues faster.
-
-        Advanced fields are intended for experienced translators and developers.
-        If you do not understand what an advanced field means, **leave it empty**.
+  - type: markdown
+    attributes:
+      value: |
+        ## Information
 
   - type: dropdown
     id: languages
     attributes:
       label: Languages
-      description: |
-        Select all languages affected by this translation issue.
-
-        If the language is not listed, select "Other" and provide details below.
+      multiple: true
       options:
         - English (en_us)
         - Japanese (ja_jp)
@@ -62,40 +61,12 @@ body:
     id: other_language
     attributes:
       label: Other Language
-      description: |
-        If you selected "Other" above, enter the language code here.
-
-        Otherwise, leave this field empty.
       placeholder: tr_tr
-
-  - type: input
-    id: mod_version
-    attributes:
-      label: Mod Version ⚡
-      description: |
-        **⚡ RECOMMENDED**
-
-        Enter the version of the mod where the translation issue occurs.
-      placeholder: 1.0.0
-
-  - type: input
-    id: minecraft_version
-    attributes:
-      label: Minecraft Version ⚡
-      description: |
-        **⚡ RECOMMENDED**
-
-        Enter the Minecraft version where the translation issue occurs.
-      placeholder: 1.21.1
 
   - type: textarea
     id: current_translation
     attributes:
       label: Current Translation
-      description: |
-        Enter the text currently displayed in-game.
-
-        Copy the text exactly as it appears.
       placeholder: |
         Current text shown in-game...
     validations:
@@ -105,66 +76,64 @@ body:
     id: suggested_translation
     attributes:
       label: Suggested Translation
-      description: |
-        Enter the translation that should be used instead.
-
-        Be as accurate and natural as possible.
       placeholder: |
         Suggested translation...
     validations:
       required: true
 
+  - type: markdown
+    attributes:
+      value: |
+        ## Classification
+
+  - type: dropdown
+    id: issue_type
+    attributes:
+      label: Translation Issue Type ⚡
+      options:
+        - Missing Translation
+        - Incorrect Translation
+        - Typo
+        - Terminology
+        - Formatting
+        - Other
+
+  - type: markdown
+    attributes:
+      value: |
+        ## Environment
+
+  - type: input
+    id: mod_version
+    attributes:
+      label: Mod Version ⚡
+      placeholder: 1.0.0
+
+  - type: input
+    id: minecraft_version
+    attributes:
+      label: Minecraft Version ⚡
+      placeholder: 1.21.1
+
+  - type: markdown
+    attributes:
+      value: |
+        ## Evidence
+
   - type: upload
     id: screenshot
     attributes:
       label: Screenshot ⚡
-      description: |
-        **⚡ RECOMMENDED**
 
-        Upload a screenshot showing the issue.
-
-        Screenshots help identify:
-        • The affected screen
-        • The affected text
-        • Context of the translation
-
-    validations:
-      required: false
-
-  - type: textarea
-    id: issue_type
+  - type: markdown
     attributes:
-      label: Translation Issue Type ⚡
-      description: |
-        **⚡ RECOMMENDED**
-
-        Describe the type of translation issue.
-
-        Examples:
-        • Missing translation
-        • Incorrect translation
-        • Typo
-        • Inconsistent terminology
-        • Untranslated text
-      placeholder: Missing translation
+      value: |
+        ## Advanced Diagnostics
 
   - type: textarea
     id: translation_context
     attributes:
       label: Translation Context 🔧
-      description: |
-        **🔧 ADVANCED**
-
-        Provide technical information that may help identify the translation.
-
-        Examples:
-        • Translation key
-        • Language file path
-        • Resource location
-        • GUI element name
-
-        **If you do not know what these terms mean, leave this field empty.**
-
       placeholder: |
         item.example_mod.example_item
         gui.example_mod.menu.title
@@ -173,24 +142,21 @@ body:
     id: terminology_notes
     attributes:
       label: Terminology Notes 🔧
-      description: |
-        **🔧 ADVANCED**
-
-        Explain terminology choices or translation conventions.
-
-        This is primarily intended for translators and localization contributors.
-
-        **If you are unsure, leave this field empty.**
 
   - type: textarea
     id: additional_notes
     attributes:
       label: Additional Notes
-      description: |
-        Provide any additional information that may help resolve the translation issue.
 
-        Examples:
-        • Reference translations
-        • Style considerations
-        • Cultural context
-        • Related translation issues
+  - type: markdown
+    attributes:
+      value: |
+        ## Verification
+
+  - type: checkboxes
+    id: verification
+    attributes:
+      label: Verification
+      options:
+        - label: I verified the suggested translation before submitting.
+          required: true

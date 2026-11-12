@@ -3,6 +3,7 @@ description: Report a game crash.
 title: "[Crash]: "
 labels:
   - crash
+type: bug
 
 body:
   - type: markdown
@@ -17,8 +18,23 @@ body:
         > • Translation issues → Use **Translation Request**
         >
         > Reports submitted using the wrong template may be closed.
-        >
-        > Crash reports are often required to identify the cause of a crash.
+
+        > [!IMPORTANT]
+        > Please provide as much accurate information as possible.
+        > Reports with sufficient information can be investigated significantly faster.
+        > The more details you provide, the easier it is to reproduce, diagnose, and resolve the issue.
+
+        ## Goals
+
+        This issue form is designed to balance:
+
+        - Ease of reporting for users.
+        - Efficient investigation for developers.
+        - High-quality issue reports.
+        - Consistent issue classification.
+        - Long-term project maintenance and analysis.
+
+        The goal is to collect useful information without making issue reporting unnecessarily difficult.
 
         ## Legend
 
@@ -26,30 +42,105 @@ body:
         ⚡ Recommended
         🔧 Advanced
 
-        Recommended fields are optional, but providing them may help us investigate and resolve issues faster.
+        Please only fill in the information you know.
 
-        Advanced fields are intended for experienced users and developers.
+        ⚡ Recommended fields are optional, but strongly encouraged.
+
+        Providing recommended information may significantly reduce investigation and resolution time.
+
+        🔧 Advanced fields are intended for experienced users, modpack authors, server administrators, and developers.
+
         If you do not understand what an advanced field means, **leave it empty**.
 
-  - type: textarea
-    id: description
-    attributes:
-      label: Description
-      description: |
-        Describe what happened before the crash occurred.
+        Providing incorrect information is less helpful than leaving the field blank.
 
-        Include any actions you performed immediately before the game crashed.
+  - type: markdown
+    attributes:
+      value: |
+        ## Information
+
+  - type: textarea
+    id: what_happened
+    attributes:
+      label: What Happened?
+      description: |
+        Describe what happened before the crash.
+
+        Avoid vague reports such as
+        "Crashed", "Broken", or "Fix this".
       placeholder: |
-        The game crashed when...
+        What happened:
+        The game crashed while opening the configuration screen.
+
+        When it happened:
+        Every time after joining a world.
+
+        What I was doing:
+        Opening the mod settings menu.
     validations:
       required: true
+      min_length: 50
+
+  - type: textarea
+    id: reproduction_steps
+    attributes:
+      label: Steps to Reproduce ⚡
+      description: |
+        **⚡ RECOMMENDED**
+
+        List the steps required to reproduce the crash.
+      placeholder: |
+        1. Join a world
+        2. Open the settings screen
+        3. Click the configuration button
+        4. Observe the crash
+    validations:
+      min_length: 20
+
+  - type: markdown
+    attributes:
+      value: |
+        ## Classification
+
+  - type: dropdown
+    id: crash_category
+    attributes:
+      label: Crash Category
+      options:
+        - Startup
+        - World Loading
+        - World Join
+        - Rendering
+        - GUI
+        - Networking
+        - World Generation
+        - Compatibility
+        - Other
+    validations:
+      required: true
+
+  - type: dropdown
+    id: reproducibility
+    attributes:
+      label: Reproducibility ⚡
+      description: |
+        **⚡ RECOMMENDED**
+      options:
+        - Always
+        - Often
+        - Sometimes
+        - Rarely
+        - Once
+
+  - type: markdown
+    attributes:
+      value: |
+        ## Environment
 
   - type: input
     id: mod_version
     attributes:
       label: Mod Version
-      description: |
-        Enter the version of this mod where the crash occurred.
       placeholder: 1.0.0
     validations:
       required: true
@@ -58,8 +149,6 @@ body:
     id: minecraft_version
     attributes:
       label: Minecraft Version
-      description: |
-        Enter the Minecraft version where the crash occurred.
       placeholder: 1.21.1
     validations:
       required: true
@@ -68,8 +157,6 @@ body:
     id: mod_loader
     attributes:
       label: Mod Loader
-      description: |
-        Select the mod loader used when the crash occurred.
       options:
         - Fabric
         - Forge
@@ -82,26 +169,59 @@ body:
     id: mod_loader_version
     attributes:
       label: Mod Loader Version
-      description: |
-        Enter the version of the selected mod loader.
       placeholder: 0.xx.x
     validations:
       required: true
+
+  - type: input
+    id: java_version
+    attributes:
+      label: Java Version ⚡
+      description: |
+        **⚡ RECOMMENDED**
+      placeholder: 21.0.7
+
+  - type: dropdown
+    id: operating_system
+    attributes:
+      label: Operating System ⚡
+      description: |
+        **⚡ RECOMMENDED**
+      options:
+        - Windows
+        - Linux
+        - macOS
+        - Other
+
+  - type: dropdown
+    id: environment
+    attributes:
+      label: Environment ⚡
+      description: |
+        **⚡ RECOMMENDED**
+      options:
+        - Singleplayer
+        - Multiplayer
+        - Dedicated Server
+
+  - type: markdown
+    attributes:
+      value: |
+        ## Evidence
 
   - type: upload
     id: crash_report
     attributes:
       label: Crash Report
       description: |
-        Upload the crash report generated by Minecraft.
-
-        Crash reports contain important information that can help identify the cause of the crash.
+        Upload the generated crash report.
 
         Common location:
-
         .minecraft/crash-reports/
     validations:
       required: true
+      accept:
+        - ".txt"
 
   - type: upload
     id: latest_log
@@ -112,44 +232,11 @@ body:
 
         Upload the latest.log file.
 
-        Additional information is often available in the log even when a crash report already exists.
-
         Common location:
-
         .minecraft/logs/latest.log
-
     validations:
-      required: false
-
-  - type: textarea
-    id: reproduction_steps
-    attributes:
-      label: Steps to Reproduce ⚡
-      description: |
-        **⚡ RECOMMENDED**
-
-        List the exact steps required to reproduce the crash.
-
-        Reproducible crashes are much easier to investigate.
-      placeholder: |
-        1. Open world
-        2. Do something
-        3. Game crashes
-
-  - type: textarea
-    id: other_mods
-    attributes:
-      label: Other Installed Mods ⚡
-      description: |
-        **⚡ RECOMMENDED**
-
-        List any mods that may interact with this mod.
-
-        Mod conflicts are a common cause of crashes.
-      placeholder: |
-        Fabric API
-        JEI
-        EMI
+      accept:
+        - ".log"
 
   - type: upload
     id: screenshots
@@ -159,52 +246,77 @@ body:
         **⚡ RECOMMENDED**
 
         Upload screenshots showing what happened before the crash.
-
-        Screenshots may provide useful visual context.
-
     validations:
-      required: false
+      accept:
+        - ".png"
+        - ".jpg"
+        - ".jpeg"
+        - ".gif"
+        - ".webp"
+
+  - type: textarea
+    id: crash_excerpt
+    attributes:
+      label: Relevant Crash Excerpt ⚡
+      description: |
+        **⚡ RECOMMENDED**
+
+        Paste the relevant section if known.
+      render: shell
+
+  - type: markdown
+    attributes:
+      value: |
+        ## Compatibility
+
+  - type: textarea
+    id: other_mods
+    attributes:
+      label: Other Installed Mods ⚡
+      description: |
+        **⚡ RECOMMENDED**
+
+        Mod conflicts are a common cause of crashes.
+      placeholder: |
+        Fabric API
+        Sodium
+        EMI
 
   - type: dropdown
-    id: environment
+    id: clean_environment_test
     attributes:
-      label: Environment
+      label: Reproduces With Only This Mod Installed? ⚡
       description: |
-        Select where the crash occurred.
-      options:
-        - Singleplayer
-        - Multiplayer
-        - Dedicated Server
+        **⚡ RECOMMENDED**
 
-  - type: dropdown
-    id: operating_system
-    attributes:
-      label: Operating System
-      description: |
-        Select the operating system used when the crash occurred.
+        Testing without other mods may help identify compatibility problems.
       options:
-        - Windows
-        - Linux
-        - macOS
-        - Other
+        - "Yes"
+        - "No"
+        - "Not Tested"
+
+  - type: markdown
+    attributes:
+      value: |
+        ## Advanced Diagnostics
 
   - type: textarea
     id: jvm_arguments
     attributes:
       label: JVM Arguments 🔧
       description: |
-        **🔧 ADVANCED**
-
-        Provide custom JVM arguments if you are using any.
-
         Examples:
-        • -Xmx8G
-        • -Xms4G
-        • Custom Java flags
+        - -Xmx8G
+        - -Xms4G
+        - Custom Java flags
 
-        This information is only useful for advanced troubleshooting.
-
-        **If you do not know what JVM arguments are, leave this field empty.**
+        > **🔧 ADVANCED**
+        >
+        > If you do not know what JVM arguments are, leave this field empty.
+      render: shell
+      placeholder: |
+        -Xmx8G
+        -Xms4G
 
   - type: textarea
     id: additional_information
@@ -214,6 +326,30 @@ body:
         Provide any additional information that may help investigate the crash.
 
         Examples:
-        • Temporary workarounds
-        • Related crashes
-        • Unusual behavior before the crash
+        - Related crashes
+        - Temporary workarounds
+        - Additional observations
+
+  - type: markdown
+    attributes:
+      value: |
+        ## Verification
+
+  - type: checkboxes
+    id: verification
+    attributes:
+      label: Verification
+      description: |
+        Please confirm the following before submitting.
+      options:
+        - label: I searched existing issues before creating this report.
+          required: true
+
+        - label: I tested the latest available version of the mod.
+          required: true
+
+        - label: I attached a crash report.
+          required: true
+
+        - label: I attached relevant logs when available.
+          required: true
