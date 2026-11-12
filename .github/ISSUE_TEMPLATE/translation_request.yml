@@ -31,20 +31,43 @@ body:
         Advanced fields are intended for experienced translators and developers.
         If you do not understand what an advanced field means, **leave it empty**.
 
-  - type: input
-    id: language
+  - type: dropdown
+    id: languages
     attributes:
-      label: Language
+      label: Languages
       description: |
-        Enter the language affected by this translation issue.
+        Select all languages affected by this translation issue.
 
-        Examples:
-        • Japanese (ja_jp)
-        • French (fr_fr)
-        • German (de_de)
-      placeholder: Japanese (ja_jp)
+        If the language is not listed, select "Other" and provide details below.
+      multiple: true
+      options:
+        - English (en_us)
+        - Japanese (ja_jp)
+        - German (de_de)
+        - French (fr_fr)
+        - Spanish (es_es)
+        - Portuguese (pt_br)
+        - Russian (ru_ru)
+        - Chinese Simplified (zh_cn)
+        - Chinese Traditional (zh_tw)
+        - Korean (ko_kr)
+        - Italian (it_it)
+        - Polish (pl_pl)
+        - Turkish (tr_tr)
+        - Ukrainian (uk_ua)
+        - Other
     validations:
       required: true
+
+  - type: input
+    id: other_language
+    attributes:
+      label: Other Language
+      description: |
+        If you selected "Other" above, enter the language code here.
+
+        Otherwise, leave this field empty.
+      placeholder: tr_tr
 
   - type: input
     id: mod_version
