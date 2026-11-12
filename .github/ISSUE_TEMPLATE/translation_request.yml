@@ -39,7 +39,6 @@ body:
         Select all languages affected by this translation issue.
 
         If the language is not listed, select "Other" and provide details below.
-      multiple: true
       options:
         - English (en_us)
         - Japanese (ja_jp)
