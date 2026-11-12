@@ -332,8 +332,6 @@ body:
         - -Xms4G
         - Custom Java flags
 
-        > [!IMPORTANT]
-        >
         > **🔧 ADVANCED**
         >
         > If you do not know what JVM arguments are, leave this field empty.
