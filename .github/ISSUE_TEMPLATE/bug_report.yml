@@ -54,7 +54,7 @@ body:
   - type: textarea
     id: what_happened
     attributes:
-      label: What Happened? *
+      label: What Happened?
       description: |
         Describe exactly what happened.
 
@@ -86,7 +86,7 @@ body:
   - type: textarea
     id: expected_behavior
     attributes:
-      label: Expected Behavior *
+      label: Expected Behavior
       description: |
         Describe what should have happened instead.
       placeholder: |
@@ -98,7 +98,7 @@ body:
   - type: textarea
     id: reproduction_steps
     attributes:
-      label: Steps to Reproduce *
+      label: Steps to Reproduce
       description: |
         List the exact steps required to reproduce the issue.
 
@@ -120,7 +120,7 @@ body:
   - type: dropdown
     id: severity
     attributes:
-      label: Severity *
+      label: Severity
       description: |
         How severe is the issue?
       options:
@@ -171,7 +171,7 @@ body:
   - type: input
     id: mod_version
     attributes:
-      label: Mod Version *
+      label: Mod Version
       placeholder: 1.0.0
     validations:
       required: true
@@ -179,7 +179,7 @@ body:
   - type: input
     id: minecraft_version
     attributes:
-      label: Minecraft Version *
+      label: Minecraft Version
       placeholder: 1.21.1
     validations:
       required: true
@@ -187,7 +187,7 @@ body:
   - type: dropdown
     id: mod_loader
     attributes:
-      label: Mod Loader *
+      label: Mod Loader
       options:
         - Fabric
         - Forge
@@ -199,7 +199,7 @@ body:
   - type: input
     id: mod_loader_version
     attributes:
-      label: Mod Loader Version *
+      label: Mod Loader Version
       placeholder: 0.xx.x
     validations:
       required: true
@@ -355,7 +355,7 @@ body:
   - type: checkboxes
     id: verification
     attributes:
-      label: Verification *
+      label: Verification
       description: |
         Please confirm the following before submitting.
       options:
