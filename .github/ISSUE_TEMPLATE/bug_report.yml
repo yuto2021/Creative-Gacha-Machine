@@ -35,12 +35,12 @@ body:
         Please only fill in the information you know.
 
         ⚡ Recommended fields are optional, but strongly encouraged.
-        Providing recommended information may significantly reduce investigation and resolution time.
+          Providing recommended information may significantly reduce investigation and resolution time.
 
         🔧 Advanced fields are intended for experienced users, modpack authors, server administrators, and developers.
-        If you do not understand what an advanced field means, **leave it empty**.
+          If you do not understand what an advanced field means, **leave it empty**.
 
-        Providing incorrect information is less helpful than leaving the field blank.
+          Providing incorrect information is less helpful than leaving the field blank.
 
   - type: markdown
     attributes:
