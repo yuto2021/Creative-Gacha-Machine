@@ -321,6 +321,19 @@ body:
     attributes:
       value: |
         ## Verification
+        
+        > [!WARNING]
+        > This form is only for non-crash bug reports.
+        >
+        > **Crashes, feature requests, port requests, and translation issues should be submitted using their respective forms.**
+        > 
+        > Separate forms are provided to collect the information required for each issue type.
+        > 
+        > **Reports submitted using the wrong form may be closed without response.**
+        >
+        > Repeated misuse of issue forms may result in reports being removed.
+        >
+        > Please be respectful and considerate toward other community members, contributors, maintainers, and developers.
 
   - type: checkboxes
     id: verification
