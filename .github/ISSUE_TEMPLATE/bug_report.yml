@@ -28,16 +28,18 @@ body:
 
         ## Legend
 
-        * Required 
+        * Required
         ⚡ Recommended
         🔧 Advanced
 
         Please only fill in the information you know.
 
         ⚡ Recommended fields are optional, but strongly encouraged.
+
         Providing recommended information may significantly reduce investigation and resolution time.
 
         🔧 Advanced fields are intended for experienced users, modpack authors, server administrators, and developers.
+
         If you do not understand what an advanced field means, **leave it empty**.
 
         Providing incorrect information is less helpful than leaving the field blank.
@@ -54,17 +56,8 @@ body:
       description: |
         Describe exactly what happened.
 
-        Include:
-        - What happened
-        - When it happened
-        - Why it appears incorrect
-
-        Reports such as:
-        - "Doesn't work"
-        - "Broken"
-        - "Fix this"
-
-        usually do not provide enough information to investigate.
+        Avoid vague reports such as
+        "Doesn't work", "Broken", or "Fix this".
       placeholder: |
         What happened:
         The recipe book becomes empty after joining a world.
@@ -131,8 +124,6 @@ body:
     attributes:
       label: Affected Area ⚡
       description: |
-        **⚡ RECOMMENDED**
-        
         Select the category that best matches the issue.
       options:
         - Gameplay
@@ -150,8 +141,6 @@ body:
     attributes:
       label: Reproducibility ⚡
       description: |
-        **⚡ RECOMMENDED**
-        
         How often does this issue occur?
       options:
         - Always
@@ -205,16 +194,12 @@ body:
     id: java_version
     attributes:
       label: Java Version ⚡
-      description: |
-        **⚡ RECOMMENDED**
       placeholder: 21.0.7
 
   - type: dropdown
     id: operating_system
     attributes:
       label: Operating System ⚡
-      description: |
-        **⚡ RECOMMENDED**
       options:
         - Windows
         - Linux
@@ -225,8 +210,6 @@ body:
     id: environment
     attributes:
       label: Environment ⚡
-      description: |
-        **⚡ RECOMMENDED**
       options:
         - Singleplayer
         - Multiplayer
@@ -242,16 +225,14 @@ body:
     attributes:
       label: Screenshots ⚡
       description: |
-        **⚡ RECOMMENDED**
-        
         Upload screenshots showing the issue.
 
-        Screenshots are especially useful for:
+        Useful for:
         - GUI issues
         - Visual bugs
         - Rendering problems
         - Missing textures
-        - Incorrect translations
+        - Translation issues
     validations:
       accept: ".png,.jpg,.jpeg,.gif,.svg,.webp"
 
@@ -260,8 +241,6 @@ body:
     attributes:
       label: Latest Log ⚡
       description: |
-        **⚡ RECOMMENDED**
-        
         Upload the latest.log file.
 
         Common location:
@@ -274,8 +253,6 @@ body:
     attributes:
       label: Relevant Log Excerpt ⚡
       description: |
-        **⚡ RECOMMENDED**
-        
         Paste the relevant log section if known.
       render: shell
       placeholder: |
@@ -292,8 +269,6 @@ body:
     attributes:
       label: Other Installed Mods ⚡
       description: |
-        **⚡ RECOMMENDED**
-        
         List any mods that may interact with this mod.
 
         Mod conflicts are a common source of issues.
@@ -307,8 +282,6 @@ body:
     attributes:
       label: Reproduces With Only This Mod Installed? ⚡
       description: |
-        **⚡ RECOMMENDED**
-        
         Testing without other mods can help identify compatibility issues.
       options:
         - "Yes"
@@ -325,16 +298,7 @@ body:
     attributes:
       label: JVM Arguments 🔧
       description: |
-        Provide custom JVM arguments if you are using any.
-
-        Examples:
-        - -Xmx8G
-        - -Xms4G
-        - Custom Java flags
-
-        > **🔧 ADVANCED**
-        >
-        > If you do not know what JVM arguments are, leave this field empty.
+        Leave empty if unknown.
       render: shell
       placeholder: |
         -Xmx8G

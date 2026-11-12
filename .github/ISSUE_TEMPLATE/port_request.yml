@@ -11,6 +11,8 @@ body:
       value: |
         > [!IMPORTANT]
         > Port requests are evaluated based on demand, maintenance cost, and technical feasibility.
+        >
+        > Submitting a request does not guarantee that a port will be created.
 
         ## Goals
 
@@ -22,11 +24,25 @@ body:
         - Consistent issue classification.
         - Long-term project planning.
 
+        The goal is to collect useful information without making port requests unnecessarily difficult.
+
         ## Legend
 
         * Required
         ⚡ Recommended
         🔧 Advanced
+
+        Please only fill in the information you know.
+
+        ⚡ Recommended fields are optional, but strongly encouraged.
+
+        Providing recommended information may significantly improve evaluation and prioritization.
+
+        🔧 Advanced fields are intended for experienced users, modpack authors, server administrators, and developers.
+
+        If you do not understand what an advanced field means, **leave it empty**.
+
+        Providing incorrect information is less helpful than leaving the field blank.
 
   - type: markdown
     attributes:
@@ -37,6 +53,8 @@ body:
     id: current_minecraft_version
     attributes:
       label: Current Minecraft Version
+      description: |
+        Enter the Minecraft version currently supported by the mod.
       placeholder: 1.21.1
     validations:
       required: true
@@ -45,6 +63,8 @@ body:
     id: requested_minecraft_version
     attributes:
       label: Requested Minecraft Version
+      description: |
+        Enter the Minecraft version you would like to see supported.
       placeholder: 1.21.4
     validations:
       required: true
@@ -73,6 +93,18 @@ body:
     validations:
       required: true
 
+  - type: textarea
+    id: reason
+    attributes:
+      label: Reason
+      description: |
+        Explain why support for this version or loader is needed.
+      placeholder: |
+        This port would be useful because...
+    validations:
+      required: true
+      min_length: 30
+
   - type: markdown
     attributes:
       value: |
@@ -82,19 +114,12 @@ body:
     id: request_type
     attributes:
       label: Request Type ⚡
+      description: |
+        Select the type of port being requested.
       options:
         - Version Port
         - Loader Port
         - Both
-
-  - type: textarea
-    id: reason
-    attributes:
-      label: Reason
-      placeholder: |
-        This port would be useful because...
-    validations:
-      required: true
 
   - type: markdown
     attributes:
@@ -105,6 +130,13 @@ body:
     id: use_case
     attributes:
       label: Use Case ⚡
+      description: |
+        Describe who would benefit from this port and how it would be used.
+      placeholder: |
+        Example:
+        - Players using version ...
+        - Modpacks targeting ...
+        - Server owners running ...
 
   - type: markdown
     attributes:
@@ -115,6 +147,8 @@ body:
     id: references
     attributes:
       label: References ⚡
+      description: |
+        Upload changelogs, compatibility reports, screenshots, documents, or other supporting materials.
 
   - type: markdown
     attributes:
@@ -125,6 +159,12 @@ body:
     id: compatibility_notes
     attributes:
       label: Compatibility Notes ⚡
+      description: |
+        Include information about related mods, APIs, dependencies, modpacks, or ecosystem support.
+      placeholder: |
+        Related mods:
+        API requirements:
+        Known compatibility considerations:
 
   - type: markdown
     attributes:
@@ -135,16 +175,34 @@ body:
     id: technical_notes
     attributes:
       label: Technical Notes 🔧
+      description: |
+        Include technical details that may help evaluate the port.
+
+        Examples:
+        - API changes
+        - Loader differences
+        - Removed features
+        - Migration requirements
 
   - type: textarea
     id: implementation_notes
     attributes:
       label: Implementation Notes 🔧
+      description: |
+        Describe known implementation details, dependencies, or development challenges.
 
   - type: textarea
     id: additional_information
     attributes:
       label: Additional Information
+      description: |
+        Provide any additional information that may help evaluate the request.
+
+        Examples:
+        - Community demand
+        - Related projects
+        - Existing forks
+        - Development status
 
   - type: markdown
     attributes:
@@ -155,6 +213,11 @@ body:
     id: verification
     attributes:
       label: Verification
+      description: |
+        Please confirm the following before submitting.
       options:
         - label: I searched existing port requests before creating this request.
+          required: true
+
+        - label: I verified that the requested version or loader is not already supported.
           required: true

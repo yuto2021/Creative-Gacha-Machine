@@ -86,8 +86,6 @@ body:
     attributes:
       label: Steps to Reproduce ⚡
       description: |
-        **⚡ RECOMMENDED**
-
         List the steps required to reproduce the crash.
       placeholder: |
         1. Join a world
@@ -123,8 +121,6 @@ body:
     id: reproducibility
     attributes:
       label: Reproducibility ⚡
-      description: |
-        **⚡ RECOMMENDED**
       options:
         - Always
         - Often
@@ -177,16 +173,12 @@ body:
     id: java_version
     attributes:
       label: Java Version ⚡
-      description: |
-        **⚡ RECOMMENDED**
       placeholder: 21.0.7
 
   - type: dropdown
     id: operating_system
     attributes:
       label: Operating System ⚡
-      description: |
-        **⚡ RECOMMENDED**
       options:
         - Windows
         - Linux
@@ -197,8 +189,6 @@ body:
     id: environment
     attributes:
       label: Environment ⚡
-      description: |
-        **⚡ RECOMMENDED**
       options:
         - Singleplayer
         - Multiplayer
@@ -220,47 +210,36 @@ body:
         .minecraft/crash-reports/
     validations:
       required: true
-      accept:
-        - ".txt"
+      accept: ".txt"
 
   - type: upload
     id: latest_log
     attributes:
       label: Latest Log ⚡
       description: |
-        **⚡ RECOMMENDED**
-
         Upload the latest.log file.
 
         Common location:
         .minecraft/logs/latest.log
     validations:
-      accept:
-        - ".log"
+      accept: ".log"
 
   - type: upload
     id: screenshots
     attributes:
       label: Screenshots ⚡
       description: |
-        **⚡ RECOMMENDED**
-
         Upload screenshots showing what happened before the crash.
+
+        Screenshots may provide useful context.
     validations:
-      accept:
-        - ".png"
-        - ".jpg"
-        - ".jpeg"
-        - ".gif"
-        - ".webp"
+      accept: ".png,.jpg,.jpeg,.gif,.svg,.webp"
 
   - type: textarea
     id: crash_excerpt
     attributes:
       label: Relevant Crash Excerpt ⚡
       description: |
-        **⚡ RECOMMENDED**
-
         Paste the relevant section if known.
       render: shell
 
@@ -274,8 +253,6 @@ body:
     attributes:
       label: Other Installed Mods ⚡
       description: |
-        **⚡ RECOMMENDED**
-
         Mod conflicts are a common cause of crashes.
       placeholder: |
         Fabric API
@@ -287,8 +264,6 @@ body:
     attributes:
       label: Reproduces With Only This Mod Installed? ⚡
       description: |
-        **⚡ RECOMMENDED**
-
         Testing without other mods may help identify compatibility problems.
       options:
         - "Yes"
@@ -305,14 +280,7 @@ body:
     attributes:
       label: JVM Arguments 🔧
       description: |
-        Examples:
-        - -Xmx8G
-        - -Xms4G
-        - Custom Java flags
-
-        > **🔧 ADVANCED**
-        >
-        > If you do not know what JVM arguments are, leave this field empty.
+        Leave empty if unknown.
       render: shell
       placeholder: |
         -Xmx8G

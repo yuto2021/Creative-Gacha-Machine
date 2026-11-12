@@ -35,9 +35,13 @@ body:
 
         ⚡ Recommended fields are optional, but strongly encouraged.
 
-        🔧 Advanced fields are intended for experienced users and developers.
+        Providing recommended information may significantly improve evaluation and prioritization.
 
-        If you do not understand what an advanced field means, leave it empty.
+        🔧 Advanced fields are intended for experienced users, modpack authors, server administrators, and developers.
+
+        If you do not understand what an advanced field means, **leave it empty**.
+
+        Providing incorrect information is less helpful than leaving the field blank.
 
   - type: markdown
     attributes:
@@ -49,33 +53,31 @@ body:
     attributes:
       label: Feature Description
       description: |
-        Describe the feature you would like to see.
+        Describe the proposed feature and what it should do.
       placeholder: |
         I would like a feature that...
     validations:
       required: true
-      min_length: 30
+      min_length: 50
 
   - type: textarea
     id: usefulness
     attributes:
       label: Why Is This Useful?
       description: |
-        Explain what problem this feature solves.
+        Explain what problem this feature solves or what benefit it provides.
       placeholder: |
-        This would be useful because...
+        This feature would be useful because...
     validations:
       required: true
-      min_length: 20
+      min_length: 30
 
   - type: textarea
     id: use_case
     attributes:
       label: Example Use Case ⚡
       description: |
-        **⚡ RECOMMENDED**
-
-        Describe a real-world use case.
+        Describe a real-world gameplay situation where this feature would be useful.
       placeholder: |
         1. Player does ...
         2. Feature activates ...
@@ -90,6 +92,8 @@ body:
     id: feature_type
     attributes:
       label: Feature Type ⚡
+      description: |
+        Select the category that best matches the request.
       options:
         - Gameplay
         - Blocks
@@ -113,9 +117,7 @@ body:
     attributes:
       label: Screenshots / Mockups ⚡
       description: |
-        **⚡ RECOMMENDED**
-
-        Upload mockups, references, diagrams, or examples.
+        Upload mockups, references, diagrams, screenshots, or examples from other mods.
 
   - type: markdown
     attributes:
@@ -127,9 +129,10 @@ body:
     attributes:
       label: Alternative Solutions ⚡
       description: |
-        **⚡ RECOMMENDED**
-
-        Describe existing workarounds or alternatives.
+        Describe existing workarounds, alternatives, or reasons why they are insufficient.
+      placeholder: |
+        I currently use...
+        Another possible solution would be...
 
   - type: markdown
     attributes:
@@ -142,21 +145,38 @@ body:
       label: Possible Implementation 🔧
       description: |
         Explain how this feature could be implemented.
+      placeholder: |
+        Possible implementation:
+        - Add ...
+        - Modify ...
+        - Create ...
 
   - type: textarea
     id: compatibility_notes
     attributes:
       label: Compatibility Considerations 🔧
+      description: |
+        Include information about compatibility with mods, APIs, data packs, resource packs, or loaders.
 
   - type: textarea
     id: technical_notes
     attributes:
       label: Technical Notes 🔧
+      description: |
+        Include technical information that may help evaluate the request.
 
   - type: textarea
     id: additional_information
     attributes:
       label: Additional Information
+      description: |
+        Provide any additional information that may help explain the request.
+
+        Examples:
+        - Related mods
+        - Related issues
+        - Community demand
+        - Additional context
 
   - type: markdown
     attributes:
@@ -167,9 +187,14 @@ body:
     id: verification
     attributes:
       label: Verification
+      description: |
+        Please confirm the following before submitting.
       options:
         - label: I searched existing feature requests before creating this request.
           required: true
 
         - label: I clearly explained the intended use case.
+          required: true
+
+        - label: This request is not primarily a bug report.
           required: true

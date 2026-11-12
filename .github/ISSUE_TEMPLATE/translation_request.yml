@@ -11,6 +11,7 @@ body:
       value: |
         > [!IMPORTANT]
         > Please provide accurate translations whenever possible.
+        > Translation issues are easier to review and resolve when sufficient context is provided.
 
         ## Goals
 
@@ -22,11 +23,25 @@ body:
         - Consistent issue classification.
         - Long-term localization maintenance.
 
+        The goal is to collect useful information without making translation reports unnecessarily difficult.
+
         ## Legend
 
         * Required
         ⚡ Recommended
         🔧 Advanced
+
+        Please only fill in the information you know.
+
+        ⚡ Recommended fields are optional, but strongly encouraged.
+
+        Providing recommended information may significantly improve review and resolution time.
+
+        🔧 Advanced fields are intended for experienced translators, modpack authors, server administrators, and developers.
+
+        If you do not understand what an advanced field means, **leave it empty**.
+
+        Providing incorrect information is less helpful than leaving the field blank.
 
   - type: markdown
     attributes:
@@ -37,7 +52,10 @@ body:
     id: languages
     attributes:
       label: Languages
-      multiple: true
+      description: |
+        Select the affected language.
+
+        If the language is not listed, select "Other" and specify it below.
       options:
         - English (en_us)
         - Japanese (ja_jp)
@@ -61,25 +79,35 @@ body:
     id: other_language
     attributes:
       label: Other Language
+      description: |
+        Only fill this field if "Other" was selected above.
       placeholder: tr_tr
 
   - type: textarea
     id: current_translation
     attributes:
       label: Current Translation
+      description: |
+        Enter the text currently displayed in-game.
+
+        Copy the text exactly as shown.
       placeholder: |
         Current text shown in-game...
     validations:
       required: true
+      min_length: 2
 
   - type: textarea
     id: suggested_translation
     attributes:
       label: Suggested Translation
+      description: |
+        Enter the translation that should be used instead.
       placeholder: |
         Suggested translation...
     validations:
       required: true
+      min_length: 2
 
   - type: markdown
     attributes:
@@ -90,6 +118,8 @@ body:
     id: issue_type
     attributes:
       label: Translation Issue Type ⚡
+      description: |
+        Select the category that best matches the issue.
       options:
         - Missing Translation
         - Incorrect Translation
@@ -124,6 +154,10 @@ body:
     id: screenshot
     attributes:
       label: Screenshot ⚡
+      description: |
+        Upload a screenshot showing the translation issue.
+
+        Screenshots help identify location and context.
 
   - type: markdown
     attributes:
@@ -134,6 +168,8 @@ body:
     id: translation_context
     attributes:
       label: Translation Context 🔧
+      description: |
+        Provide translation keys, file paths, or other technical information if known.
       placeholder: |
         item.example_mod.example_item
         gui.example_mod.menu.title
@@ -142,21 +178,49 @@ body:
     id: terminology_notes
     attributes:
       label: Terminology Notes 🔧
+      description: |
+        Explain terminology choices, style guides, or translation conventions if relevant.
 
   - type: textarea
     id: additional_notes
     attributes:
       label: Additional Notes
+      description: |
+        Provide any additional information that may help resolve the translation issue.
+
+        Examples:
+        - Reference translations
+        - Terminology references
+        - Cultural context
+        - Related translation issues
 
   - type: markdown
     attributes:
       value: |
         ## Verification
+        
+        > [!WARNING]
+        > This form is only for translation and localization issues.
+        >
+        > **Bugs, crashes, feature requests, and port requests should be submitted using their respective forms.**
+        > 
+        > Separate forms are provided to collect the information required for each issue type.
+        > 
+        > **Reports submitted using the wrong form may be closed without response.**
+        >
+        > Repeated misuse of issue forms may result in reports being removed.
+        >
+        > Please be respectful and considerate toward other community members, contributors, maintainers, and developers.      
 
   - type: checkboxes
     id: verification
     attributes:
       label: Verification
+      description: |
+        Please confirm the following before submitting.
       options:
         - label: I verified the suggested translation before submitting.
+          required: true
+
+        - label: I copied the current translation exactly as displayed.
           required: true
