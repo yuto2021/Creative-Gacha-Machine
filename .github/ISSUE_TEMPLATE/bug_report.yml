@@ -16,6 +16,18 @@ body:
         >
         > The more details you provide, the easier it is to reproduce, diagnose, and resolve the issue.
 
+        ## Goals
+
+        This issue form is designed to balance:
+
+        - Ease of reporting for users.
+        - Efficient investigation for developers.
+        - High-quality issue reports.
+        - Consistent issue classification.
+        - Long-term project maintenance and analysis.
+
+        The goal is to collect useful information without making issue reporting unnecessarily difficult.
+
         ## Legend
 
         * Required
@@ -24,7 +36,9 @@ body:
 
         Please only fill in the information you know.
 
-        ⚡ Recommended fields are optional, but providing them may help us investigate, classify, and resolve issues faster.
+        ⚡ Recommended fields are optional, but strongly encouraged.
+
+        Providing recommended information may significantly reduce investigation and resolution time.
 
         🔧 Advanced fields are intended for experienced users, modpack authors, server administrators, and developers.
 
@@ -64,6 +78,7 @@ body:
 
         Why it seems incorrect:
         Recipes should still be displayed.
+      render: bash
     validations:
       required: true
       min_length: 100
