@@ -31,7 +31,7 @@
   "gui.gacha_group_library.ok": "OK",
   "gui.gacha_group_library.name": "Name",
   "gui.gacha_group_library.roll_count": "Roll Count",
-  "gui.gacha_group_library": "Pool Librar",
+  "gui.gacha_group_library": "Pool Library",
   "gui.gacha_group_library.roll_total": "Roll: %s",
   "gui.gacha_group_library.add_count": "Add Count",
   "gui.gacha_group_library.edit": "Edit",
