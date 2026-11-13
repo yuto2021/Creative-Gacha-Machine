@@ -40,5 +40,8 @@
   "message.creative_gacha_machine.not_enough_money": "Insufficient Payment",
   "tooltip.gacha_ticket.name": "Gacha Ticket Name: %s",
   "tooltip.gacha_ticket.type": "Gacha Ticket Type: %s",
-  "gui.creative_gacha_machine.ticket_payment": "Ticket Payment"
+  "gui.creative_gacha_machine.ticket_payment": "Ticket Payment",
+  "message.creative_gacha_machine.cannot_change_mode_rollable": "Cannot change the mode while in a rollable state",
+  "message.creative_gacha_machine.payment_returned": "The payment has been refunded",
+  "gui.creative_gacha_machine.normal_payment": "Normal Payment"
 }
